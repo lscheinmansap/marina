@@ -1,0 +1,129 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	xmlns:vk="sap.ui.vk"
+	xmlns:vbm="sap.ui.vbm"
+	controllerName="marina.controller.GraphExplorer">
+    <Dialog
+        id="explorerPanel"
+        title="Explore">
+        <content>
+            <l:VerticalLayout  width="90%" class="sapUiSmallMargin">
+                <SearchField
+                    id="graphSearchField" 
+                    width="100%"
+                    liveChange="onSuggest"
+                    search="onSearch"
+                    enableSuggestions="true"
+                    maxLength="0"
+                    suggestionItems="{
+                        path: '/suggestions',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <Panel 
+                    expandable="true"
+                    headerText="Shortest Path"
+                    width="100%">
+                    <content>
+                        <l:VerticalLayout>
+                            <Label text="Source Node" labelFor="SourceNodeInput" />
+                            <SearchField
+                                id="graphShortestPathSource" 
+                                width="100%"
+                                liveChange="onSuggest"
+                                search="onSetShortestPathSource"
+                                maxLength="0"
+                                enableSuggestions="true"
+                                suggestionItems="{
+                                    path: '/suggestions',
+                                    sorter: { path: 'text'}
+                                }">
+                                <SuggestionItem 
+                                    text="{text}"
+                                    key="{key}"/>
+                            </SearchField>
+                            <Label text="Target Node" labelFor="TargetNodeInput" />
+                            <SearchField
+                                id="graphShortestPathTarget" 
+                                width="100%"
+                                liveChange="onSuggest"
+                                search="onSetShortestPathTarget"
+                                enableSuggestions="true"
+                                maxLength="0"
+                                suggestionItems="{
+                                    path: '/suggestions',
+                                    sorter: { path: 'text'}
+                                }">
+                                <SuggestionItem 
+                                    text="{text}"
+                                    key="{key}"/>
+                            </SearchField>
+                            <Button 
+                                text="Get"
+                                press="onPressShortestPath" />
+                        </l:VerticalLayout>
+                    </content>
+                </Panel>
+                <Panel 
+                    expandable="true"
+                    headerText="Neighbors"
+                    width="100%" >
+                    <content>
+                        <l:VerticalLayout>
+                            <Label 
+                                text="Source Node" />
+                            <SearchField
+                                id="graphNeighbors" 
+                                width="100%"
+                                liveChange="onSuggest"
+                                search="onSetNeighborsSource"
+                                maxLength="0"
+                                enableSuggestions="true"
+                                suggestionItems="{
+                                    path: '/suggestions',
+                                    sorter: { path: 'text'}
+                                }">
+                                <SuggestionItem 
+                                    text="{text}"
+                                    key="{key}"/>
+                            </SearchField>
+                            <Label 
+                                text="Bounds" 
+                                labelFor="NeighborsRange" />
+                            <l:HorizontalLayout>
+                                <RangeSlider 
+                                    id="NeighborsRange"
+                                    showAdvancedTooltip="true"
+                                    liveChange="neighborRangeChange"
+                                    min="0" 
+                                    value="0"
+                                    value2="1"
+                                    max="4" 
+                                    width="80%" 
+                                    class="sapUiMediumMarginBottom" />
+                                <Button 
+                                    class="sapUiTinyMarginBeginEnd"
+                                    text="Get"
+                                    press="onPressNeighbors" />
+                            </l:HorizontalLayout>
+                        </l:VerticalLayout>
+                    </content>
+                </Panel>
+                <l:HorizontalLayout>
+                    <Button 
+                        text="Cancel"
+                        type="Reject"
+                        press="onPressCancel" />
+                </l:HorizontalLayout>
+            </l:VerticalLayout>
+        </content>
+    </Dialog>
+</mvc:View>

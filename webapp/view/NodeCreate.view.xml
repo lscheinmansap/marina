@@ -1,0 +1,202 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	xmlns:vk="sap.ui.vk"
+	xmlns:vbm="sap.ui.vbm"
+    controllerName="marina.controller.NodeCreate">
+    <Dialog 
+        id="createNodePanel"
+        title="Create Node"
+        >
+        <content>
+            <l:VerticalLayout width="90%" class="sapUiSmallMargin">
+                <Label text="Type"/>
+                <Input
+                    id="nodeTypeInput"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Person, Object, Location, Event..."
+                    showSuggestion="true"
+                    suggestionItemSelected="onNodeTypeSelected"
+                    suggestionItems="{/types}">
+                    <suggestionItems>
+                        <core:Item text="{text}" key="{text}"/>
+                    </suggestionItems>
+                </Input>
+                <Label text="Title"/>
+                <Input
+                    id="nodeTitleInput"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter node title"
+                    change= "onNodeTitleChange" />
+                <Label text="Icon"/>
+                <SearchField
+                    id="searchNodeIcons" 
+                    class="sapUiSmallMarginBottom"
+                    width="100%"
+                    suggest="onSuggestIcons"
+                    search="onSetIcon"
+                    enableSuggestions="true"
+                    suggestionItems="{
+                        path: '/icons',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <Label text="Category" id="categoryInputLabel" visible="false"/>
+                <Input
+                    id="categoryInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter category"
+                    change= "onNodeCategoryChange" />
+                <Label text="URL" visible="true"/>
+                <Input
+                    id="URLInput"
+                    visible="true"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter URL"
+                    change= "onNodeURLChange" />
+                <Label text="Longitude/Latitude (select from map)" id="LonLatInputLabel" visible="false"/>
+                <l:HorizontalLayout id="LonLatFields" visible="false">
+                    <Input
+                        id="LongitudeInput"
+                        visible="false"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="Longitude"
+                        change= "onNodeLongitudeChange" />
+                    <Input
+                        id="LatitudeInput"
+                        visible="false"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="Latitude"
+                        change= "onNodeLatitudeChange" />
+                </l:HorizontalLayout>
+                <Label text="City, country (manual entry)" id="CityCountryInputLabel" visible="false"/>
+                <l:HorizontalLayout id="CityCountryFields" visible="false">
+                    <Input
+                        id="CityInput"
+                        visible="false"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="City"
+                        change= "onNodeCityChange" />
+                    <Input
+                        id="CountryInput"
+                        visible="false"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="Country"
+                        change= "onNodeCountryChange" />
+                </l:HorizontalLayout>
+                <l:FixFlex 
+                    class="fixContentSize"
+                    id="createLocationMapFlexBox" 
+                    visible="false"
+                    minFlexSize="300px">
+                    <l:flexContent>
+                        <vk:MapContainer 
+                            showZoom="false"
+                            showHome="false"
+                            showNavbar="false"
+                            showSelection="false"
+                            showRectangularZoom="false"
+                            showSettings="false"
+                            autoAdjustHeight="false">
+                            <vk:content>
+                                <vk:ContainerContent 
+                                    id="createLocationMapContainer"
+                                    title="Base map"
+                                    icon="sap-icon://map-2">
+                                    <vk:content>
+                                        <vbm:GeoMap 
+                                            id="createLocationMap"
+                                            click="onMapClick"
+                                            height="100%"
+                                            width="100%"/>
+                                    </vk:content>
+                                </vk:ContainerContent>
+                            </vk:content>
+                        </vk:MapContainer>
+                    </l:flexContent>
+                </l:FixFlex>
+                <Label text="Start date" id="startDateTimePickerLabel" visible="false"/>
+                <DateTimePicker
+                    id="startDateTimePicker"
+                    valueFormat="yyyy-MM-dd HH:mm:ss"
+                    displayFormat="short"
+                    change="handleChangeStartDate"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"/>
+                <Label text="End date" id="endDateTimePickerLabel" visible="false"/>
+                <DateTimePicker
+                    id="endDateTimePicker"
+                    valueFormat="yyyy-MM-dd HH:mm:ss"
+                    displayFormat="short"
+                    change="handleChangeEndDate"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"/>
+                <Label text="First Name" id="firstNameInputLabel" visible="false"/>
+                <Input
+                    id="firstNameInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter first name"
+                    change= "onNodeFirstNameChange" />
+                <Label text="Last Name" id="lastNameInputLabel" visible="false"/>
+                <Input
+                    id="lastNameInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter last name"
+                    change= "onNodeLastNameChange" />
+                <Label text="Gender" id="genderInputLabel"/>
+                <Input
+                    id="genderInput"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter person gender"
+                    showSuggestion="true"
+                    suggestionItemSelected="onGenderSelected"
+                    suggestionItems="{/genders}">
+                    <suggestionItems>
+                        <core:Item text="{text}" key="{text}"/>
+                    </suggestionItems>
+                </Input>
+                <Label text="Date of Birth" id="dobDateTimePickerLabel" visible="false"/>
+                <DateTimePicker
+                    id="dobDateTimePicker"
+                    valueFormat="yyyy-MM-dd HH:mm:ss"
+                    displayFormat="short"
+                    change="handleChangeDOB"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"/>
+                <Label text="Person age" id="ageInputLabel" visible="false"/>
+                <Input
+                    id="ageInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter person age"
+                    change= "onNodeAgeChange" />
+                <l:HorizontalLayout>
+                    <Button 
+                        text="Create"
+                        type="Accept"
+                        press="onPressCreateNode" 
+                        class="sapUiSmallMarginEnd"/>
+                    <Button 
+                        text="Cancel"
+                        type="Reject"
+                        press="onPressCancel" />
+                </l:HorizontalLayout>
+            </l:VerticalLayout>
+        </content>
+    </Dialog>
+
+</mvc:View>

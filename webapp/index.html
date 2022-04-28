@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SAP Marina</title>
+    <style>
+        html, body, body > div, #container, #container-uiarea {
+            height: 100%;
+        }
+    </style>
+    <script src="js/moment.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+	<link rel="stylesheet" href="css/leafletEasyButton.css" />
+	<script src="js/areaselect.js"></script>
+	<script src="js/leafletHeat.js"></script>
+	<script src="js/leafletEasyButton.js"></script>
+	<script src="js/geojson2svg.min.js"></script>
+    <script src="js/constants.js" type="text/javascript"></script>
+	<!-- OFFLINE: script src="js/moment.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="css/leaflet.css" />
+	<script src="js/leaflet.js"></script>
+	<link rel="stylesheet" href="css/leafletEasyButton.css" />
+	<script src="js/areaselect.js"></script>
+	<script src="js/leafletHeat.js"></script>
+	<script src="js/leafletEasyButton.js"></script>
+	<script src="js/geojson2svg.min.js"></script-->
+    
+    <!--ONLINE -->
+    <script
+        id="sap-ui-bootstrap"
+        src="https://sapui5.hana.ondemand.com/1.80.0/resources/sap-ui-core.js"
+        data-sap-ui-libs='sap.m,sap.ui.commons,sap.suite.ui.microchart,sap.suite.ui.commons,sap.uxap,sap.tnt,sap.f,sap.viz,sap.ui.table'
+        data-sap-ui-theme="sap_fiori_3"
+        data-sap-ui-resourceroots='{"marina": "./"}'
+        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-frameOptions="trusted"
+    ></script>
+    <link rel="icon" href="./images/icons/sap_logo.ico">
+    <!-- OFFLINE: script
+        id="sap-ui-bootstrap"
+        src="resources/sap-ui-core.js"
+        data-sap-ui-libs='sap.m,sap.ui.commons,sap.suite.ui.microchart,sap.suite.ui.commons,sap.uxap,sap.tnt,sap.f,sap.viz,sap.ui.table'
+        data-sap-ui-theme="sap_fiori_3"
+        data-sap-ui-resourceroots='{
+            "marina": "./"
+        }'
+        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-frameOptions="trusted"
+    ></script-->
+</head>
+<body class="sapUiBody sapUiSizeCompact" id="content">
+    <div
+        data-sap-ui-component
+        data-name="marina"
+        data-id="container"
+        data-settings='{"id" : "marina"}'
+        data-handle-validation="true"
+    ></div>
+</body>
+</html>

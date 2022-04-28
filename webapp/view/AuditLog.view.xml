@@ -1,0 +1,35 @@
+<mvc:View class="sapUiSizeCompact"
+    controllerName="marina.controller.AuditLog"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns="sap.ui.table">
+    <Table alternateRowColors="true" editable="false" selectionMode="None" minAutoRowCount="15"
+        visibleRowCountMode="Auto" rows="{/audit}">
+        <columns>
+            <Column filterProperty="OBJECT_TYPE" sortProperty="OBJECT_TYPE"> 
+                <m:Label text="Type" />
+                    <template>
+                        <m:Text text="{OBJECT_TYPE}" />
+                    </template>
+            </Column>
+            <Column filterProperty="ACTION" sortProperty="ACTION"> 
+                <m:Label text="Action" />
+                    <template>
+                        <m:Text text="{ACTION}" />
+                    </template>
+            </Column>
+            <Column filterProperty="USERID" sortProperty="USERID"> 
+                <m:Label text="User" />
+                    <template>
+                        <m:Text text="{USERID}" />
+                    </template>
+            </Column>
+            <Column filterProperty="ACTION_TIMESTAMP" sortProperty="ACTION_TIMESTAMP"> 
+                <m:Label text="Date" />
+                    <template>
+                        <m:Text text="{path: 'ACTION_TIMESTAMP', formatter: '.formatter.modDateTime'}" />
+                    </template>
+            </Column>
+        </columns>
+    </Table>
+</mvc:View>

@@ -1,0 +1,127 @@
+<mvc:View
+    controllerName="marina.controller.MyApprovals"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="false">
+        <content>
+            <l:BlockLayout background="Dashboard" class="mgmtBlockLayout">
+                <l:content>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell width="1">
+                                <l:content>
+                                    <Toolbar class="sapUiSmallMarginBottom">
+                                        <Label text="My Approvals" class="resultsHeaderTitle" />
+                                    </Toolbar>
+                                    <IconTabBar
+                                        stretchContentHeight="false"
+                                        expandable="false">
+                                        <items>
+                                            <IconTabFilter icon="sap-icon://approvals" design="Horizontal" text="To Do" key="TODO" count="{/myApprovals/total}">
+                                                <content>
+                                                    <ScrollContainer id="myApprovalsScroll">
+                                                        <content>
+                                                            <List id="myApprovalsList" class="centerAlign"
+                                                                mode="SingleSelectMaster"
+                                                                growing="true"
+                                                                growingScrollToLoad="true"
+                                                                growingThreshold="50"
+                                                                sticky="HeaderToolbar"
+                                                                noDataText="You currently have no cards to approve."
+                                                                itemPress="pressEditApproval"
+                                                                items="{/myApprovals/results}">
+                                                                <items>
+                                                                    <StandardListItem
+                                                                        type="Navigation"
+                                                                        unread="true"
+                                                                        title="{CARD_NAME}" 
+                                                                        icon="{ICON}"
+                                                                        description="{path: 'ASSIGNED_TIMESTAMP', formatter: '.formatter.modDateTime'}"
+                                                                        customData:id="{CARD_ID}"
+                                                                        customData:wfName="{WF_NAME}"
+                                                                        customData:currState="{STATE_NAME}"/>
+                                                                </items>
+                                                                <layoutData>
+                                                                    <FlexItemData maxWidth="100%" minWidth="100%" />
+                                                                </layoutData>
+                                                            </List>
+                                                        </content>
+                                                    </ScrollContainer>
+                                                </content>
+                                            </IconTabFilter>
+                                            <IconTabSeparator />
+                                            <IconTabFilter icon="sap-icon://employee-approvals" design="Horizontal" iconColor="Positive" text="Prior Approvals" key="approvals" count="{/priorApprovals/total}" >
+                                                <content>
+                                                    <ScrollContainer id="priorApprovalsScroll">
+                                                        <content>
+                                                            <List class="centerAlign"
+                                                                mode="SingleSelectMaster"
+                                                                growing="true"
+                                                                growingScrollToLoad="true"
+                                                                growingThreshold="50"
+                                                                sticky="HeaderToolbar"
+                                                                noDataText="No prior approvals."
+                                                                itemPress="pressEditApproval"
+                                                                items="{/priorApprovals/results}">
+                                                                <items>
+                                                                    <StandardListItem
+                                                                        type="Navigation"
+                                                                        unread="true"
+                                                                        title="{CARD_NAME}" 
+                                                                        icon="{ICON}"
+                                                                        description="{path: 'ACTION_TIMESTAMP', formatter: '.formatter.modDateTime'}"
+                                                                        customData:id="{CARD_ID}"
+                                                                        customData:wfName="{WF_NAME}" />
+                                                                </items>
+                                                                <layoutData>
+                                                                    <FlexItemData maxWidth="100%" minWidth="100%" />
+                                                                </layoutData>
+                                                            </List>
+                                                        </content>
+                                                    </ScrollContainer>
+                                                </content>
+                                            </IconTabFilter>
+                                            <IconTabFilter icon="sap-icon://employee-rejections" design="Horizontal" iconColor="Negative" text="Prior Rejections" key="rejections" count="{/priorRejections/total}" >
+                                                <content>
+                                                    <ScrollContainer id="priorRejectionsScroll">
+                                                        <content>
+                                                            <List class="centerAlign"
+                                                                mode="SingleSelectMaster"
+                                                                growing="true"
+                                                                growingScrollToLoad="true"
+                                                                growingThreshold="50"
+                                                                sticky="HeaderToolbar"
+                                                                noDataText="No prior rejections."
+                                                                itemPress="pressRejection"
+                                                                items="{/priorRejections/results}">
+                                                                <items>
+                                                                    <StandardListItem
+                                                                        type="Navigation"
+                                                                        unread="true"
+                                                                        title="{CARD_NAME}" 
+                                                                        icon="{ICON}"
+                                                                        description="{path: 'ACTION_TIMESTAMP', formatter: '.formatter.modDateTime'}"
+                                                                        customData:id="{CARD_ID}"
+                                                                        customData:wfName="{WF_NAME}" />
+                                                                </items>
+                                                                <layoutData>
+                                                                    <FlexItemData maxWidth="100%" minWidth="100%" />
+                                                                </layoutData>
+                                                            </List>
+                                                        </content>
+                                                    </ScrollContainer>
+                                                </content>
+                                            </IconTabFilter>
+                                        </items>
+                                    </IconTabBar>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                        </l:content>
+                    </l:BlockLayoutRow>
+                </l:content>
+            </l:BlockLayout>
+        </content>
+    </Page>
+</mvc:View>

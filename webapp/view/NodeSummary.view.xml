@@ -1,0 +1,81 @@
+<mvc:View 
+    xmlns:mvc="sap.ui.core.mvc" 
+    displayBlock="true" 
+	xmlns="sap.m" 
+    height="400px"
+    controllerName="marina.controller.NodeSummary">
+    <IconTabBar
+        id="idIconTabBar"
+        select=".onFilterSelect"
+        class="sapUiResponsiveContentPadding">
+        <items>
+            <IconTabFilter
+                icon="sap-icon://overview-chart"
+                count="{/totalCount}"
+                text="All"
+                key="All" />
+            <IconTabFilter
+                icon="sap-icon://customer"
+                count="{/personCount}"
+                text="People"
+                key="Person" />
+            <IconTabFilter
+                icon="sap-icon://puzzle"
+                count="{/objectCount}"
+                text="Objects"
+                key="Object" />
+            <IconTabFilter
+                icon="sap-icon://map"
+                count="{/locationCount}"
+                text="Locations"
+                key="Location" />
+            <IconTabFilter
+                icon="sap-icon://date-time"
+                count="{/eventCount}"
+                text="Events"
+                key="Event" />
+            <IconTabFilter
+                icon="sap-icon://chain-link"
+                count="{/relationCount}"
+                text="Relations"
+                key="Relation" />
+        </items>
+    </IconTabBar>
+    <Table
+        id="nodeSummaryTable"
+        alternateRowColors="true"
+        growing="true"
+        growingScrollToLoad="true"
+        items="{
+            path: '/nodeSummary'
+        }">
+        <columns>
+            <Column>
+                <Text text="type"/>
+            </Column>
+            <Column>
+                <Text text="title"/>
+            </Column>
+            <Column>
+                <Text text="status"/>
+            </Column>
+            <Column>
+                <Text text="key"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="Active" press="onClickRow">
+                <cells>
+                    <Text
+                        text="{type}"/>
+                    <Text
+                        text="{title}"/>
+                    <Text
+                        text="{status}"/>
+                    <Text
+                        text="{key}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</mvc:View>

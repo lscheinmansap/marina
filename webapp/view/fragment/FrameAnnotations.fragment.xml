@@ -1,0 +1,59 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:core="sap.ui.core">
+    <Popover
+        contentMinWidth="300px"
+        showHeader="true"
+        title="{/selectedAnnoSource} {/selectedAnnoType} "
+        placement="Bottom">
+        <subHeader>
+            <Toolbar>
+                <content>
+                    <Button
+                        icon="sap-icon://multiselect-all"
+                        tooltip="Select All"
+                        press="selectAll" />
+                    <Button
+                        icon="sap-icon://multiselect-none"
+                        tooltip="Deselect All"
+                        press="deSelectAll" />
+                    <ToolbarSpacer />
+                    <SearchField liveChange="annotationsObjectSearch" />
+                </content>
+            </Toolbar>
+        </subHeader>
+        <content>
+            <ScrollContainer
+                height="250px"
+                width="100%"
+                vertical="true">
+                <content>
+                    <List
+                        id="frameAnnotationsList"
+                        width="100%"
+                        mode="MultiSelect"
+                        items="/frameAnnotations"
+                        class="sapUiNoContentPadding">
+                        <items>
+                            <StandardListItem 
+                                type="Active"
+                                title="{OBJECT_NAME}"
+                                customData:id="{SEQUENCE_CLIP_UUID}"
+                                />
+                        </items>
+                    </List>
+                </content>
+            </ScrollContainer>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button text="Apply" press="drawSvg"/>
+                </content>
+            </Toolbar>
+        </footer>
+    </Popover>
+
+</core:FragmentDefinition>

@@ -1,0 +1,216 @@
+<mvc:View
+    controllerName="marina.controller.FrameDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:ied="sap.ui.suite.commons.imageeditor"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:u="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <ux:ObjectPageLayout id="frameOpl"
+        useIconTabBar="true"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="false"
+        headerContentPinnable="true"
+        isChildPage="true"
+        upperCaseAnchorBar="false">
+        <ux:headerTitle>
+            <ux:ObjectPageDynamicHeaderTitle>
+                <ux:expandedHeading>
+                    <FlexBox
+                        alignItems="Center"
+                        fitContainer="true">
+                        <items>
+                            <core:Icon class="sapUiSmallMarginEnd" src="sap-icon://crop" size="25px" />
+                            <Title text="{/frame/metadata/FRAME_FILENAME}" />
+                        </items>
+                    </FlexBox>
+                </ux:expandedHeading>
+                <ux:navigationActions>
+                    <OverflowToolbarButton type="Transparent"
+                        icon="sap-icon://decline"
+                        press="handleClose"
+                        tooltip="Return to Clip Detail" />
+                </ux:navigationActions>
+                <ux:actions>
+                    <Button
+                        icon="sap-icon://download"
+                        tooltip="Export Frame"
+                        text="Export"/>
+                </ux:actions>
+                <ux:sections>
+                    <ux:ObjectPageSection title="Image">
+                        <ux:subSections>
+                            <ux:ObjectPageSubSection>
+                                <ux:blocks>
+                                    <ied:ImageEditorContainer id="imageEditorContainer" mode="Transform" >
+                                        <ied:ImageEditor src="/imagery/getImageryFromBucket?file={/frame/metadata/FRAME_IMAGE_FILE_PATH}" />
+                                        <ied:customToolbatControls>
+                                            <Button 
+                                                visible="{path: '/frame/annotations', formatter: '.formatter.getAnnotations'}"
+                                                type="Transparent"
+                                                icon="sap-icon://tags"
+                                                text="Annotate"
+                                                customData:frameId="{/frame/metadata/SEQUENCE_FRAME_UUID}"
+                                                customData:imageryId="{/frame/metadata/IMAGERY_PACKAGE_UUID}"
+                                                press="showFrameAnnotations" />
+                                        </ied:customToolbatControls>
+                                    </ied:ImageEditorContainer>
+                                </ux:blocks>
+                            </ux:ObjectPageSubSection>
+                        </ux:subSections>
+                    </ux:ObjectPageSection>
+                    <ux:ObjectPageSection title="Frame Details">
+                        <ux:subSections>
+                            <ux:ObjectPageSubSection>
+                                <ux:blocks>
+                                    <f:SimpleForm layout="ColumnLayout">
+                                        <f:content>
+                                            <Label text="Sequence Frame" class="formLabel" />
+                                            <Text text="{/frame/metadata/SEQU_FRAME}" />
+                                            <Label text="Source Video Frame" class="formLabel" />
+                                            <Text text="{/frame/metadata/SRC_VIDEO_FRAME}" />
+                                            <Label text="Altitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/ALTITUDE_FT} ft." />
+                                            <Label text="Bottom Mid Elevation Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/BOTTOM_MIDDLE_ELEVATION_ANGLE_DEG} deg." />
+                                            <Label text="Bottom Mid Horz Ires" class="formLabel" />
+                                            <Text text="{/frame/metadata/BOTTOM_MIDDLE_HORZ_IRES_FT} ft." />
+                                            <Label text="Bottom Mid Slant Range NMI" class="formLabel" />
+                                            <Text text="{/frame/metadata/BOTTOM_MIDDLE_SLANT_RANGE_NMI}" />
+                                            <Label text="Bottom Mid Vert Ires" class="formLabel" />
+                                            <Text text="{/frame/metadata/BOTTOM_MIDDLE_VERT_IRES_FT} ft." />
+                                            <Label text="Classifying Country" class="formLabel" />
+                                            <Text text="{/frame/metadata/CLASSIFYING_COUNTRY}" />
+                                            <Label text="Center Elevation Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/CENTER_ELEVATION_ANGLE_DEG} deg." />
+                                            <Label text="Center Horz Ires" class="formLabel" />
+                                            <Text text="{/frame/metadata/CENTER_HORZ_IRES_FT} ft." />
+                                            <Label text="Center Slant Range NMI" class="formLabel" />
+                                            <Text text="{/frame/metadata/CENTER_SLANT_RANGE_NMI} ft." />
+                                            <Label text="Center Vert Ires" class="formLabel" />
+                                            <Text text="{/frame/metadata/CENTER_VERT_IRES_FT} ft." />
+                                            <Label text="Coregistration Azimuth" class="formLabel" />
+                                            <Text text="{/frame/metadata/COREGISTRATION_AZIMUTH}" />
+                                            <Label text="Coregistration Elevation" class="formLabel" />
+                                            <Text text="{/frame/metadata/COREGISTRATION_ELEVATION}" />
+                                            <Label text="Coregistration Twist" class="formLabel" />
+                                            <Text text="{/frame/metadata/COREGISTRATION_TWIST}" />
+                                            <Label text="Country Coding Method" class="formLabel" />
+                                            <Text text="{/frame/metadata/COUNTRY_CODING_METHOD}" />
+                                            <Label text="Pixel Height" class="formLabel" />
+                                            <Text text="{/frame/metadata/HEIGHT_PIX}" />
+                                            <Label text="Horz FOV Degree" class="formLabel" />
+                                            <Text text="{/frame/metadata/HORZ_FOV_DEG}" />
+                                            <Label text="Image Coordinate System" class="formLabel" />
+                                            <Text text="{/frame/metadata/IMAGE_COORDINATE_SYSTEM}" />
+                                            <Label text="Image Source Sensor" class="formLabel" />
+                                            <Text text="{/frame/metadata/IMAGE_SOURCE_SENSOR}" />
+                                            <Label text="Is Registered" class="formLabel" />
+                                            <Text text="{/frame/metadata/IS_REGISTERED}" />
+                                            <Label text="Frame Center Altitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/FRAME_CENTER_ALT}" />
+                                            <Label text="Frame Center Latitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/FRAME_CENTER_LAT}" />
+                                            <Label text="Frame Center Longitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/FRAME_CENTER_LON}" />
+                                            <Label text="Generic Flag Data" class="formLabel" />
+                                            <Text text="{/frame/metadata/GENERIC_FLAG_DATA}" />
+                                            <Label text="Mission ID" class="formLabel" />
+                                            <Text text="{/frame/metadata/MISSION_ID}" />
+                                            <Label text="Object Country Code" class="formLabel" />
+                                            <Text text="{/frame/metadata/OBJECT_COUNTRY_CODE}" />
+                                            <Label text="Object Country Coding Method" class="formLabel" />
+                                            <Text text="{/frame/metadata/OBJECT_COUNTRY_CODING_METHOD}" />
+                                            <Label text="Object Metadata Version Num" class="formLabel" />
+                                            <Text text="{/frame/metadata/OBJECT_METADATA_VERSION_NUMBER}" />
+                                            <Label text="Original Timestamp" class="formLabel" />
+                                            <Text text="{path: '/frame/metadata/ORIGINAL_TIMESTAMP', formatter: '.formatter.imgDateTimeStamp'}"/>
+                                            <Label text="Platform Ground Speed" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_GROUND_SPEED}" />
+                                            <Label text="Platform Heading" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_HEADING}" />
+                                            <Label text="Platform Heading Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_HEADING_ANGLE}" />
+                                            <Label text="Platform Pitch Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_PITCH_ANGLE}" />
+                                            <Label text="Platform Roll Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_ROLL_ANGLE}" />
+                                            <Label text="Platform True Airspeed" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_TRUE_AIRSPEED}" />
+                                            <Label text="Platform Type" class="formLabel" />
+                                            <Text text="{/frame/metadata/PLATFORM_TYPE}" />
+                                            <Label text="Classification" class="formLabel" />
+                                            <Text text="{/frame/metadata/SECURITY_CLASSIFICATION}" />
+                                            <Label text="Sensor Band" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_BAND}" />
+                                            <Label text="Sensor Horz FOV" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_HORIZONTAL_FIELD_OF_VIEW}" />
+                                            <Label text="Sensor Latitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_LAT}" />
+                                            <Label text="Sensor Longitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_LON}" />
+                                            <Label text="Sensor Relative Azimuth Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_RELATIVE_AZIMUTH_ANGLE}" />
+                                            <Label text="Sensor Relative Pitch Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_RELATIVE_PITCH_ANGLE}" />
+                                            <Label text="Sensor Relative Roll Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_RELATIVE_ROLL_ANGLE}" />
+                                            <Label text="Sensor Vertical FOV" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_VERTICAL_FIELD_OF_VIEW}" />
+                                            <Label text="Sensor True Altitude" class="formLabel" />
+                                            <Text text="{/frame/metadata/SENSOR_TRUE_ALTITUDE}" />
+                                            <Label text="Solar Angles Image Plane PHI" class="formLabel" />
+                                            <Text text="{/frame/metadata/SOLAR_ANGLES_IMAGE_PLANE_PHI_DEGRESS} deg." />
+                                            <Label text="Solar Angles Image Plane THETA" class="formLabel" />
+                                            <Text text="{/frame/metadata/SOLAR_ANGLES_IMAGE_PLANE_THETA_DEGREES} deg." />
+                                            <Label text="Solar Angles NED PHI" class="formLabel" />
+                                            <Text text="{/frame/metadata/SOLAR_ANGLES_NED_PHI_DEGREES} deg." />
+                                            <Label text="Solar Angles NED THETA" class="formLabel" />
+                                            <Text text="{/frame/metadata/SOLAR_ANGLES_NED_THETA_DEGREES} deg." />
+                                            <Label text="Slant Range" class="formLabel" />
+                                            <Text text="{/frame/metadata/SLANT_RANGE}" />
+                                            <Label text="Stabilization Success" class="formLabel" />
+                                            <Text text="{/frame/metadata/STABILITZATION_SUCCESS_FLAG}" />
+                                            <Label text="Stabilization Given Since Last Reg" class="formLabel" />
+                                            <Text text="{/frame/metadata/STABILIZATION_GIVEN_UP_SINCE_LAST_REG_FLAG}" />
+                                            <Label text="Tail Number" class="formLabel" />
+                                            <Text text="{/frame/metadata/TAIL_NUMBER}" />
+                                            <Label text="Target Location Elevation" class="formLabel" />
+                                            <Text text="{/frame/metadata/TARGET_LOCATION_ELEVATION}" />
+                                            <Label text="Target Width" class="formLabel" />
+                                            <Text text="{/frame/metadata/TARGET_WIDTH}" />
+                                            <Label text="Time Since Last Reg" class="formLabel" />
+                                            <Text text="{/frame/metadata/TIME_SINCE_LAST_REGISTRATION}" />
+                                            <Label text="Time Since Stabilization" class="formLabel" />
+                                            <Text text="{/frame/metadata/TIME_SINCE_STABILIZATION_LAST_GAVE_UP}" />
+                                            <Label text="Top Mid Elevation Angle" class="formLabel" />
+                                            <Text text="{/frame/metadata/TOP_MIDDLE_ELEVATION_ANGLE_DEG} deg" />
+                                            <Label text="Top Middle Horz Ires" class="formLabel" />
+                                            <Text text="{/frame/metadata/TOP_MIDDLE_HORZ_IRES_FT} ft." />
+                                            <Label text="Top Middle Slant Range NMI" class="formLabel" />
+                                            <Text text="{/frame/metadata/TOP_MIDDLE_SLANT_RANGE_NMI}" />
+                                            <Label text="Top Middle Vert Ires" class="formLabel" />
+                                            <Text text="{/frame/metadata/TOP_MIDDLE_VERT_IRES_FT} ft." />
+                                            <Label text="UAS Datalink Version" class="formLabel" />
+                                            <Text text="{/frame/metadata/UAS_DATALINK_LS_VERSION_NUMBER}" />
+                                            <Label text="Vert FOV Degree" class="formLabel" />
+                                            <Text text="{/frame/metadata/VERT_FOV_DEGREE}" />
+                                            <Label text="Pixel Width" class="formLabel" />
+                                            <Text text="{/frame/metadata/WIDTH_PIX}" />
+                                            <Label text="File Size" class="formLabel" />
+                                            <Text text="{path: '/frame/metadata/FILE_SIZE_BYTES', formatter: '.formatter.formatNumber'}"/>
+                                            <Label text="Filename" class="formLabel" />
+                                            <Text text="{/frame/metadata/FRAME_FILENAME}" />
+                                        </f:content>
+                                    </f:SimpleForm>
+                                </ux:blocks>
+                            </ux:ObjectPageSubSection>
+                        </ux:subSections>
+                    </ux:ObjectPageSection>
+                </ux:sections>
+            </ux:ObjectPageDynamicHeaderTitle>
+        </ux:headerTitle>
+    </ux:ObjectPageLayout>
+</mvc:View>

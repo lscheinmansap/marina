@@ -1,0 +1,298 @@
+<core:View
+	xmlns="sap.suite.ui.commons.networkgraph"
+	xmlns:layout="sap.suite.ui.commons.networkgraph.layout"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:m="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	height="600px"
+    controllerName="marina.controller.NetworkGraph">
+    <l:FixFlex vertical="true">
+        <l:flexContent>
+            <m:FlexBox fitContainer="true" renderType="Bare" wrap="Wrap">
+                <m:items>
+                    <Graph  
+                        enableWheelZoom="false"
+                        nodes="{/nodes}"
+                        lines="{/lines}"
+                        groups="{/groups}"
+                        graphReady="graphReady"
+                        orientation="TopBottom"
+                        id="graph">
+                        <layoutAlgorithm>
+                            <layout:LayeredLayout
+                                nodePlacement="LinearSegments"
+                            />
+                        </layoutAlgorithm>
+                        <nodes>
+                            <Node
+                                height="{settings>/height}"
+                                key="{key}"
+                                title="{title}"
+                                icon="{icon}"
+                                group="{group}"
+                                attributes="{path:'attributes', templateShareable:true}"
+                                shape="{shape}"
+                                status="{status}"
+                                x="{x}"
+                                y="{y}"
+                                showActionLinksButton="false"
+                                showExpandButton="false">
+                                <attributes>
+                                    <ElementAttribute
+                                            label="{label}"
+                                            value="{value}"/>
+                                </attributes>
+                            </Node>
+                        </nodes>
+                        <lines>
+                            <Line
+                                    from="{from}"
+                                    to="{to}"
+                                    status="{status}"
+                                    title="{title}"
+                            >
+                            </Line>
+                        </lines>
+                        <groups>
+                            <Group
+                                    key="{key}"
+                                    title="{title}">
+                            </Group>
+                        </groups>
+                        <statuses>
+                            <Status
+                                key="ShortestPath"
+                                backgroundColor="#009E73"
+                                title="Shortest Path"
+                                legendColor="#009E73"
+                                contentColor="#009E73"
+                                borderColor="#009E73"
+                            />
+                            <Status
+                                key="IsOrgManagerOf"
+                                backgroundColor="#56B4E9"
+                                title="Organizational relation"
+                                legendColor="#56B4E9"
+                                contentColor="#56B4E9"
+                                borderColor="#56B4E9"
+                            />
+                            <Status
+                                key="IsOpsManagerOf"
+                                backgroundColor="#E69F00"
+                                title="Operational relation"
+                                legendColor="#E69F00"
+                                contentColor="#E69F00"
+                                borderColor="#E69F00"
+                            />
+                            <Status
+                                key="IsExcManagerOf"
+                                backgroundColor="#F0E442"
+                                title="Exercise relation"
+                                legendColor="#F0E442"
+                                contentColor="#F0E442"
+                                borderColor="#F0E442"
+                            />
+                            <Status
+                                key="Ready"
+                                title="Ready"
+                                legendColor="sapUiChartPaletteSemanticGood"
+                                backgroundColor="sapUiChartPaletteSemanticGood"
+                            />
+                            <Status
+                                key="Incomplete"
+                                title="Incomplete/Not ready"
+                                legendColor="sapUiChartPaletteSemanticBadLight1"
+                                backgroundColor="sapUiChartPaletteSemanticBadLight1"
+                            />
+                            <Status
+                                key="Pending"
+                                title="Pending/Expiring soon"
+                                legendColor="sapUiChartPaletteSemanticCritical"
+                                backgroundColor="sapUiChartPaletteSemanticCritical"
+                            />
+                            <Status
+                                key="MC"
+                                title="Mission Capable"
+                                legendColor="sapUiChartPaletteSemanticGood"
+                                backgroundColor="sapUiChartPaletteSemanticGood"
+                            />
+                            <Status
+                                key="NMC"
+                                title="Non Mission Capable"
+                                legendColor="sapUiChartPaletteSemanticBadLight1"
+                                backgroundColor="sapUiChartPaletteSemanticBadLight1"
+                            />
+                            <Status
+                                key="PMC"
+                                title="Partial Capable"
+                                legendColor="sapUiChartPaletteSemanticCritical"
+                                backgroundColor="sapUiChartPaletteSemanticCritical"
+                            />
+
+                        </statuses>
+                    </Graph>
+                </m:items>
+            </m:FlexBox>
+        </l:flexContent>
+	</l:FixFlex>
+    <m:Popover
+		id="shortestPathPopover"
+		title="Navigation"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Left">
+		<l:VerticalLayout>
+			<m:Label class="sapUiTinyMargin" text="Get Neighbors" />
+			<m:Label class="sapUiTinyMargin" text="Bounds" />
+				<m:RangeSlider id="getNeighborsDegrees" width="80%"
+					range="0,1" min="0" max="5" 
+					showAdvancedTooltip="true" 
+					class="sapUiSmallMargin" change="setNeighborsDegrees"/>
+			<m:Button class="sapUiSmallMargin" text="Get neighbors" press="onPressNeighbors"/>
+			<m:Label class="sapUiTinyMargin" text="Shortest Path" />
+			<m:SearchField
+				id="nodeBasedShortestPathSearchField"
+				width="95%"
+				suggest="onShortestPathSuggest"
+				search="onShortestPathSearch"
+				enableSuggestions="true"
+				class="sapUiTinyMargin"
+				suggestionItems="{
+					path: '/suggestions',
+					sorter: { path: 'text'}
+				}">
+				<m:SuggestionItem 
+					text="{text}"
+					key="{key}"/>
+			</m:SearchField>
+		</l:VerticalLayout>
+	</m:Popover>
+	<m:Popover
+		id="groupByAttributesPopover"
+		title="Group by attributes"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Bottom">
+		<l:VerticalLayout>
+			<m:SegmentedButton id="groupingToggle" selectedKey="false" class="sapUiTinyMargin" selectionChange="toggleGroupingByAttributes">
+				<m:items>
+					<m:SegmentedButtonItem text="On" key="true"/>
+					<m:SegmentedButtonItem text="Off" key="false" />
+				</m:items>
+			</m:SegmentedButton>
+			<m:SelectList
+				id="groupAttributeList"
+				class="sapUiTinyMargin" 
+				itemPress="selectGroupByAttribute"
+				items="{/items}">
+				<core:Item key="{attributeName}" text="{attributeName}"/>
+			</m:SelectList>
+		</l:VerticalLayout>
+	</m:Popover>
+	<m:Popover
+		id="graphMapPopover"
+		showHeader="false"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Bottom">
+		<GraphMap 
+			id="map" 
+			title=""
+			graph="graph">
+		</GraphMap>
+	</m:Popover>
+	<m:Popover
+		id="settingsPopoverForced"
+		title="Forced Layout settings"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Bottom">
+		<l:VerticalLayout>
+			<m:Label class="sapUiTinyMargin" text="Cool down step" />
+			<m:Slider id="coolDownStep" value="50" width="100%"
+				min="0" max="100"
+				showAdvancedTooltip="true"
+				showHandleTooltip="false"
+				class="sapUiTinyMargin"
+				change="adjustCoolDownStep" />
+			<m:Label class="sapUiTinyMargin" text="Optimal distance" />
+			<m:Slider id="optimalDistanceConstant" value="50" width="100%"
+				min="0" max="5" step="0.01"
+				showAdvancedTooltip="true"
+				showHandleTooltip="false"
+				class="sapUiTinyMargin"
+				change="adjustOptimalDistanceConstant" />
+		</l:VerticalLayout>
+	</m:Popover>
+	<m:Popover
+		id="settingsPopoverLayered"
+		title="Layered Layout settings"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Bottom">
+		<l:VerticalLayout>
+			<m:Label class="sapUiTinyMargin" text="Node placement" />
+				<m:RadioButtonGroup selectedIndex="1" select="adjustNodePlacement">
+					<m:RadioButton text="Min Bends" />
+					<m:RadioButton text="Optimize" />
+					<m:RadioButton text="Min Area" />
+				</m:RadioButtonGroup>
+			<m:Label class="sapUiTinyMargin" text="Merge edges" />
+			<m:SegmentedButton selectedKey="false" class="sapUiTinyMargin" selectionChange="adjustMergedEdges">
+				<m:items>
+					<m:SegmentedButtonItem text="On" key="true"/>
+					<m:SegmentedButtonItem text="Off" key="false" />
+				</m:items>
+			</m:SegmentedButton>
+			<m:Label class="sapUiTinyMargin" text="Direction" />
+			<m:SegmentedButton selectedKey="Vertical" class="sapUiTinyMargin" selectionChange="adjustDirection">
+				<m:items>
+					<m:SegmentedButtonItem icon="sap-icon://arrow-bottom" key="Vertical"/>
+					<m:SegmentedButtonItem icon="sap-icon://arrow-right" key="Horizontal" />
+				</m:items>
+			</m:SegmentedButton>
+		</l:VerticalLayout>
+	</m:Popover>
+	<m:Popover
+		id="customizationPopover"
+		title="Customization"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Bottom">
+		<l:VerticalLayout>
+			<m:Label class="sapUiTinyMargin" text="Line Arrow Position" />
+			<m:RadioButtonGroup selectedIndex="0" select="adjustArrowPosition">
+				<m:RadioButton text="End" />
+				<m:RadioButton text="Middle" />
+				<m:RadioButton text="Start" />
+			</m:RadioButtonGroup>
+			<m:Label class="sapUiTinyMargin" text="Line Arrow Orientation" />
+			<m:RadioButtonGroup selectedIndex="0" select="adjustArrowOrientation">
+				<m:RadioButton text="Parent" />
+				<m:RadioButton text="Child" />
+				<m:RadioButton text="Both" />
+				<m:RadioButton text="None" />
+			</m:RadioButtonGroup>
+			<m:Label class="sapUiTinyMargin" text="Node shape" />
+			<m:RadioButtonGroup selectedIndex="0" select="adjustNodeShape">
+				<m:RadioButton text="Circle" />
+				<m:RadioButton text="Box" />
+			</m:RadioButtonGroup>
+		</l:VerticalLayout>
+	</m:Popover>
+	<m:Popover
+		id="streetViewPopOver"
+		title="Street view"
+		visible="false"
+        afterClose="closePopover"
+		class="sapUiResponsivePadding--header sapUiResponsivePadding--footer"
+		placement="Right">
+	</m:Popover>
+</core:View>

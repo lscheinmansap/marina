@@ -1,0 +1,79 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+	xmlns:vk="sap.ui.vk"
+	xmlns:vbm="sap.ui.vbm"
+	controllerName="marina.controller.EdgeCreate">
+    <Dialog 
+        id="createEdgePanel"
+        title="Create Edge">
+        <content>
+            <l:VerticalLayout width="90%" class="sapUiSmallMargin">
+                <Label text="Search nodes for source" />
+                <SearchField
+                    id="searchSourceNode" 
+                    width="100%"
+                    class="sapUiSmallMarginBottom"
+                    suggest="onSuggest"
+                    search="onSetSourceNode"
+                    maxLength="0"
+                    enableSuggestions="true"
+                    suggestionItems="{
+                        path: '/suggestions',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <Label text="Search nodes for target" />
+                <SearchField
+                    id="searchTargetNode" 
+                    width="100%"
+                    class="sapUiSmallMarginBottom"
+                    suggest="onSuggest"
+                    search="onSetTargetNode"
+                    maxLength="0"
+                    enableSuggestions="true"
+                    suggestionItems="{
+                        path: '/suggestions',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <Label text="Edge Title" id="edgeTitleLabel"/>
+                <Input
+                    id="edgeTitleInput"
+                    class="sapUiSmallMarginBottom"
+                    visible="true"
+                    width="100%"
+                    showSuggestion="true"
+                    placeholder="Type of relationship"
+                    suggestionItemSelected="onEdgeTitleSelected"
+                    suggestionItems="{/edgeTypes}">
+                    <suggestionItems>
+                        <core:Item text="{text}" key="{text}"/>
+                    </suggestionItems>
+                </Input>
+                <l:HorizontalLayout>
+                    <Button 
+                        text="Create"
+                        type="Accept"
+                        press="onPressCreateEdge" 
+                        class="sapUiSmallMarginEnd"/>
+                    <Button 
+                        text="Cancel"
+                        type="Reject"
+                        press="onPressCancel" />
+                </l:HorizontalLayout>
+            </l:VerticalLayout>
+        </content>
+    </Dialog>
+</mvc:View>

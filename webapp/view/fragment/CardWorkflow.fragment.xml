@@ -1,0 +1,26 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+    xmlns:c="sap.suite.ui.commons"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:core="sap.ui.core">
+    <c:ProcessFlow 
+        id="dataCard-workflow"
+        lanes="{/workflow}">
+        <c:lanes>
+            <c:ProcessFlowLaneHeader
+                laneId="{LANE_ID}"
+                iconSrc="{ICON}"
+                text="{STATE_NAME}"
+                state="{parts:[ {path: 'ASSIGNED_TIMESTAMP'}, {path: 'ACTION_TAKEN'}],
+                                formatter: '.formatter.getProcessFlowState'}"
+                position="{LANE_ID}"
+                customData:assignedApprover="{ACTION_APPROVER}"
+                customData:assignedTimestamp="{ASSIGNED_TIMESTAMP}"
+                customData:actionTaken="{ACTION_TAKEN}"
+                customData:actionTimestamp="{ACTION_TIMESTAMP}"
+                customData:actionComments="{ACTION_COMMENTS}"
+                press="getProcessStepDetails">
+            </c:ProcessFlowLaneHeader>
+        </c:lanes>
+    </c:ProcessFlow>
+</core:FragmentDefinition>

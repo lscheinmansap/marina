@@ -1,0 +1,77 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <form:SimpleForm 
+        class="sapUiSizeCompact" layout="ColumnLayout" editable="true" content="{path: /manifestRow}">
+        <form:content>
+            <Label text="Data Set Name" />
+            <Input value="{/dataset/NAME}" />
+            <Label text="Classification" />
+            <ComboBox
+                selectedKey="{/dataset/CLASSIFICATION}"
+                items="{
+                    path: '/classifications'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Source" />
+            <Input value="{/dataset/SOURCE}" />
+            <Label text="Primary Category" />
+            <ComboBox
+                selectedKey="{/dataset/PRIME_CATEGORY}"
+                items="{
+                    path: '/dataSetCategories'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Sub Category" />
+            <ComboBox
+                selectedKey="{/dataset/SUB_CATEGORY}"
+                items="{
+                    path: '/dataSetSubCategories'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Access Type" />
+            <ComboBox
+                selectedKey="{/dataset/ACCESS_TYPE}"
+                items="{
+                    path: '/dataSetAccessTypes'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Load Status" />
+            <ComboBox
+                selectedKey="{/dataset/LOAD_STATUS}"
+                items="{
+                    path: '/dataSetLoadStatus'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Load Frequency" />
+            <ComboBox
+                selectedKey="{/dataset/LOAD_FREQUENCY}"
+                items="{
+                    path: '/dataSetLoadFreqs'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Data Node Path" />
+            <Input value="{/dataset/DATANODE_PATH}" />
+            <Label text="Data Card Status" />
+            <ComboBox
+                selectedKey="{/dataset/DATA_CARD_STATUS}"
+                items="{
+                    path: '/dataCardStatus'
+                }">
+                <core:Item key="{VALUE}" text="{VALUE}" />
+            </ComboBox>
+            <Label text="Description" />
+            <TextArea value="{/dataset/DESCRIPTION}" height="100px" maxLength="5000" />
+
+        </form:content>
+
+    </form:SimpleForm>
+</core:FragmentDefinition>

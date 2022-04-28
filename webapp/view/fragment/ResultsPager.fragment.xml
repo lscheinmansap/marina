@@ -1,0 +1,32 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <HBox alignContent="Center" alignItems="Center" fitContainer="true" class="sapUiSizeCompact">
+        <items>
+            <Button class="sapUiSizeCompact"
+                icon="sap-icon://close-command-field" tooltip="Goto First Page" type="Transparent"
+                press="getFirst" enabled="{path: '/results/offset', formatter: '.formatter.isOffset'}" />
+            <Button class="sapUiSizeCompact"
+                icon="sap-icon://nav-back" tooltip="Goto Previous Page" type="Transparent"
+                press="getPrevious" enabled="{path: '/results/offset', formatter: '.formatter.isOffset'}" />
+            <Label class="pagerHeader" 
+                text="{parts:[
+                            {path: '/results/total'}, {path: '/results/offset'}, {path: '/results/limit'}
+                        ], formatter: '.formatter.getResultsPagerCount'}" />
+            <Button class="sapUiSizeCompact"
+                icon="sap-icon://navigation-right-arrow" tooltip="Goto Next Page" type="Transparent"
+                press="getNext" 
+                enabled="{parts:[
+                            {path: '/results/total'}, {path: '/results/offset'}, {path: '/results/total'}
+                        ], formatter: '.formatter.getOffsetMultiple'}" />
+            <Button class="sapUiSizeCompact"
+                icon="sap-icon://open-command-field" tooltip="Goto Last Page" type="Transparent"
+                press="getLast" 
+                enabled="{parts:[
+                            {path: '/results/total'}, {path: '/results/offset'}, {path: '/results/total'}
+                        ], formatter: '.formatter.getOffsetMultiple'}" />
+        </items>
+    </HBox>
+</core:FragmentDefinition>

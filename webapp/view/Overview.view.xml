@@ -1,0 +1,134 @@
+<mvc:View
+    controllerName="marina.controller.Overview"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns:c="sap.suite.ui.commons"
+    xmlns:v="sap.viz.ui5.controls"
+    xmlns:ds="sap.viz.ui5.data"
+    xmlns:core="sap.ui.core"
+    xmlns:fd="sap.viz.ui5.controls.common.feeds"
+    xmlns="sap.m">
+    <Page showHeader="false">
+        <l:BlockLayout background="Dashboard">
+            <l:layoutData>
+                <FlexItemData minWidth="70%" maxWidth="70%" />
+            </l:layoutData>
+            <l:content>
+            <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell title="{i18n>dataSetLoadStatus}" width="1">
+                            <l:content>
+                                <FlexBox height="8rem" alignItems="Start">
+                                    <items>
+                                        <micro:InteractiveDonutChart displayedSegments="5" selectionEnabled="true" segments="{/loadStatus}">
+                                            <micro:segments>
+                                                <micro:InteractiveDonutChartSegment label="{LOAD_STATUS}" value="{COUNT}" />
+                                            </micro:segments>
+                                        </micro:InteractiveDonutChart>
+                                    </items>
+                                </FlexBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell title="{i18n>dataSetLoadFreq}" width="1">
+                            <l:content>
+                                <FlexBox height="8rem" alignItems="Start">
+                                    <items>
+                                        <micro:InteractiveDonutChart displayedSegments="5" selectionEnabled="true" segments="{/loadFreq}">
+                                            <micro:segments>
+                                                <micro:InteractiveDonutChartSegment label="{LOAD_FREQUENCY}" value="{COUNT}" />
+                                            </micro:segments>
+                                        </micro:InteractiveDonutChart>
+                                    </items>
+                                </FlexBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell title="{i18n>dataSetAccessType}" width="1">
+                            <l:content>
+                                <FlexBox height="8rem" alignItems="Start">
+                                    <items>
+                                        <micro:InteractiveDonutChart displayedSegments="5" selectionEnabled="true" segments="{/accessType}">
+                                            <micro:segments>
+                                                <micro:InteractiveDonutChartSegment label="{ACCESS_TYPE}" value="{COUNT}" />
+                                            </micro:segments>
+                                        </micro:InteractiveDonutChart>
+                                    </items>
+                                </FlexBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                    </l:content>
+            </l:BlockLayoutRow>
+                <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell title="{i18n>dataSetsSummary}" width="3">
+                            <l:content>
+                                <c:ChartContainer title="{i18n>dataSetsByCategory}" showFullScreen="true" contentChange="contentChangeDataSetsChart">
+                                    <c:content>
+                                        <c:ChartContainerContent id="dataSetsChartContainer" icon="sap-icon://database" title="{i18n>dataSets}">
+                                        </c:ChartContainerContent>
+                                    </c:content>
+                                    <c:dimensionSelectors>
+                                        <Select change="handleChartContainerSelectionChange">
+                                            <core:Item key="dataSets" text="{i18n>dataSets}"/>
+                                            <core:Item key="imagery" text="Imagery"/>
+                                        </Select>
+                                    </c:dimensionSelectors>
+                                </c:ChartContainer>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                    </l:content>
+            </l:BlockLayoutRow>
+                <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell title="{i18n>dataSetsExportedByMonth}" width="1">
+                            <l:content>
+                                <FlexBox height="9rem" alignItems="Center">
+                                    <items>
+                                        <micro:InteractiveLineChart displayedPoints="6" selectionEnabled="true" points="{/datasetDownloadsByMonth}">
+                                            <micro:points>
+                                                <micro:InteractiveLineChartPoint 
+                                                    label="{path: 'MONTH', formatter: '.formatter.modMonthsShort'}"
+                                                    value="{COUNT}" 
+                                                />
+                                            </micro:points>
+                                        </micro:InteractiveLineChart>
+                                    </items>
+                                </FlexBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell title="{i18n>imageryExportedByMonth}" width="1">
+                            <l:content>
+                                <FlexBox height="9rem" alignItems="Center">
+                                    <items>
+                                        <micro:InteractiveLineChart displayedPoints="6" selectionEnabled="true" points="{/imageryDownloadsByMonth}">
+                                            <micro:points>
+                                                <micro:InteractiveLineChartPoint 
+                                                    label="{path: 'MONTH', formatter: '.formatter.modMonthsShort'}" 
+                                                    value="{COUNT}" />
+                                            </micro:points>
+                                        </micro:InteractiveLineChart>
+                                    </items>
+                                </FlexBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell title="{i18n>modelViewsByMonth}" width="1">
+                            <l:content>
+                                <FlexBox height="9rem" alignItems="Center">
+                                    <items>
+                                        <micro:InteractiveLineChart displayedPoints="6" selectionEnabled="true" points="{/modelViewsByMonth}">
+                                            <micro:points>
+                                                <micro:InteractiveLineChartPoint 
+                                                    label="{path: 'MONTH', formatter: '.formatter.modMonthsShort'}" 
+                                                    value="{COUNT}" />
+                                            </micro:points>
+                                        </micro:InteractiveLineChart>
+                                    </items>
+                                </FlexBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                    </l:content>
+            </l:BlockLayoutRow>
+            </l:content>
+        </l:BlockLayout>
+    </Page>
+</mvc:View>

@@ -1,0 +1,224 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+	xmlns:vk="sap.ui.vk"
+	xmlns:vbm="sap.ui.vbm"
+	controllerName="marina.controller.NodeEdit">
+    <Dialog 
+        id="editNodePanel"
+        title="Edit Node">
+        <content>
+            <l:VerticalLayout width="90%" class="sapUiSmallMargin">
+                <Label text="Search nodes" />
+                <SearchField
+                    id="searchNodeToEdit" 
+                    width="100%"
+                    class="sapUiSmallMarginBottom"
+                    suggest="onSuggest"
+                    search="onSetNodeToEdit"
+                    maxLength="0"
+                    enableSuggestions="true"
+                    suggestionItems="{
+                        path: '/suggestions',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <l:VerticalLayout id="editFields">
+                <Label text="Type" id="editTypeLabel" visible="false"/>
+                <Input
+                    id="editNodeTypeInput"
+                    class="sapUiSmallMarginBottom"
+                    visible="false"
+                    width="100%"
+                    placeholder="Person, Object, Location, Event..."
+                    showSuggestion="true"
+                    suggestionItemSelected="onNodeTypeSelected"
+                    suggestionItems="{/types}">
+                    <suggestionItems>
+                        <core:Item text="{text}" key="{text}"/>
+                    </suggestionItems>
+                </Input>
+                <Label text="Title" id="editNodeTitleLabel" visible="false"/>
+                <Input
+                    id="editNodeTitleInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter node title"
+                    change= "onNodeTitleChange" />
+                <Label text="Icon" id="editNodeIconLabel" visible="false"/>
+                <SearchField
+                    id="editSearchNodeIcons" 
+                    class="sapUiSmallMarginBottom"
+                    width="100%"
+                    visible="false"
+                    maxLength="0"
+                    suggest="onSuggestIcons"
+                    search="onSetIcon"
+                    enableSuggestions="true"
+                    suggestionItems="{
+                        path: '/icons',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <Label text="Category" id="editCategoryInputLabel" visible="false"/>
+                <Input
+                    id="editCategoryInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter category"
+                    change= "onNodeCategoryChange" />
+                <Label text="URL" visible="false" id="editURLInputLabel"/>
+                <Input
+                    id="editURLInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter URL"
+                    change= "onNodeURLChange" />
+                <Label text="Longitude/Latitude (select from map)" id="editLonLatInputLabel" visible="false"/>
+                <l:HorizontalLayout id="editLonLatFields" visible="false">
+                    <Input
+                        id="editLongitudeInput"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="Longitude"
+                        change= "onNodeLongitudeChange" />
+                    <Input
+                        id="editLatitudeInput"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="Latitude"
+                        change= "onNodeLatitudeChange" />
+                </l:HorizontalLayout>
+                <Label text="City, country (manual entry)" id="editCityCountryInputLabel" visible="false"/>
+                <l:HorizontalLayout id="editCityCountryFields" visible="false">
+                    <Input
+                        id="editCityInput"
+                        visible="false"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="City"
+                        change= "onNodeCityChange" />
+                    <Input
+                        id="editCountryInput"
+                        visible="false"
+                        width="50%"
+                        class="sapUiTinyMargin"
+                        placeholder="Country"
+                        change= "onNodeCountryChange" />
+                </l:HorizontalLayout>
+                <l:FixFlex 
+                    class="fixContentSize sapUiSmallMarginBottom"
+                    id="editLocationMapFlexBox" 
+                    visible="false"
+                    minFlexSize="300px">
+                    <l:flexContent>
+                        <vk:MapContainer 
+                            showZoom="false"
+                            showHome="false"
+                            showNavbar="false"
+                            showSelection="false"
+                            showRectangularZoom="false"
+                            showSettings="false"
+                            autoAdjustHeight="false">
+                            <vk:content>
+                                <vk:ContainerContent 
+                                    id="editLocationMapContainer"
+                                    title="Base map"
+                                    icon="sap-icon://map-2">
+                                    <vk:content>
+                                        <vbm:GeoMap 
+                                            id="editLocationMap"
+                                            click="onMapClick"
+                                            height="100%"
+                                            width="100%"/>
+                                    </vk:content>
+                                </vk:ContainerContent>
+                            </vk:content>
+                        </vk:MapContainer>
+                    </l:flexContent>
+                </l:FixFlex>
+                <Label text="Start date" id="editStartDateTimePickerLabel" visible="false"/>
+                <DateTimePicker
+                    id="editStartDateTimePicker"
+                    valueFormat="yyyy-MM-dd HH:mm:ss"
+                    displayFormat="short"
+                    change="handleChangeStartDate"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"/>
+                <Label text="End date" id="editEndDateTimePickerLabel" visible="false"/>
+                <DateTimePicker
+                    id="editEndDateTimePicker"
+                    valueFormat="yyyy-MM-dd HH:mm:ss"
+                    displayFormat="short"
+                    change="handleChangeEndDate"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"/>
+                <Label text="First Name" id="editFirstNameInputLabel" visible="false"/>
+                <Input
+                    id="editFirstNameInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter first name"
+                    change= "onNodeFirstNameChange" />
+                <Label text="Last Name" id="editLastNameInputLabel" visible="false"/>
+                <Input
+                    id="editLastNameInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter last name"
+                    change= "onNodeLastNameChange" />
+                <Label text="Gender" id="editGenderInputLabel" visible="false"/>
+                <Input
+                    id="editGenderInput"
+                    class="sapUiSmallMarginBottom"
+                    visible="false"
+                    placeholder="Enter person gender"
+                    showSuggestion="true"
+                    suggestionItemSelected="onGenderSelected"
+                    suggestionItems="{/genders}">
+                    <suggestionItems>
+                        <core:Item text="{text}" key="{text}"/>
+                    </suggestionItems>
+                </Input>
+                <Label text="Date of Birth" id="editDobDateTimePickerLabel" visible="false"/>
+                <DateTimePicker
+                    id="editDobDateTimePicker"
+                    valueFormat="yyyy-MM-dd HH:mm:ss"
+                    displayFormat="short"
+                    change="handleChangeDOB"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"/>
+                <Label text="Person age" id="editAgeInputLabel" visible="false"/>
+                <Input
+                    id="editAgeInput"
+                    visible="false"
+                    class="sapUiSmallMarginBottom"
+                    placeholder="Enter person age"
+                    change= "onNodeAgeChange" />
+                </l:VerticalLayout>
+                <l:HorizontalLayout>
+                    <Button 
+                        text="Edit"
+                        type="Accept"
+                        press="onPressEditNode" 
+                        class="sapUiSmallMarginEnd"/>
+                    <Button 
+                        text="Cancel"
+                        type="Reject"
+                        press="onPressCancel" />
+                </l:HorizontalLayout>
+            </l:VerticalLayout>
+        </content>
+    </Dialog>
+</mvc:View>

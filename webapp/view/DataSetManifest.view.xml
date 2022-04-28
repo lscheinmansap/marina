@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="marina.controller.DataSetManifest"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:tnt="sap.tnt"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="true" title="Data Set Manifest" showNavButton="true" titleAlignment="Center"
+        enableScrolling="true" navButtonPress="navBack">
+        <l:BlockLayout background="Dashboard" class="sapUiSizeCompact">
+            <l:content>
+                <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell>
+                            <ScrollContainer id="manifestScroll" vertical="true" horizontal="true" width="100%">
+                                <content>
+                                    <Table id="manifestTable" growing="false" alternateRowColors="true" 
+                                        sticky="HeaderToolbar,InfoToolbar,ColumnHeaders"
+                                        inset="false"
+                                        class="sapUiSizeCompact"
+                                        items="{
+                                                path: '/results/results/'
+                                            }">
+                                        <headerToolbar>
+                                            <Toolbar width="100%">
+                                                <content>
+                                                    <Label text="Data Set Administration" class="sapUiSmallMarginEnd resultsHeaderTitle"/>
+                                                    <Label text="{/results/total} {i18n>results}" class="resultsHeaderTotal" />
+                                                    <ToolbarSpacer />
+                                                    <core:Fragment fragmentName="marina.view.fragment.ResultsPager" type="XML" />
+                                                    <ToolbarSpacer />
+                                                    <SearchField id="manifestSearch" width="20%" placeholder="Search Data Sets" liveChange="getManifest" />
+                                                    <Button text="{i18n>filter}" icon="sap-icon://filter" type="Transparent" press="dataSetFilter" class="sapUiSizeCompact"/>
+                                                    <MenuButton text="Export" icon="sap-icon://download" type="Transparent">
+                                                        <menu>
+                                                            <Menu>
+                                                                <items>
+                                                                    <MenuItem icon="sap-icon://syntax" text="JSON" press="exportManifest"/>
+                                                                    <MenuItem icon="sap-icon://excel-attachment" text="CSV" press="exportManifest"/>
+                                                                </items>
+                                                            </Menu>
+                                                        </menu>
+                                                    </MenuButton>
+                                                </content>
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <columns>
+                                            <Column vAlign="Top" width="80px" 
+                                                visible="{path: 'USER_MODEL>/admin', formatter: '.formatter.isAdmin'}" > <Text text=""/> </Column>
+                                            <Column vAlign="Top" width="250px"> <Text text="Data Set Name" /> </Column>
+                                            <Column vAlign="Top" width="200px"> <Text  text="Source/Provider" /> </Column>
+                                            <Column vAlign="Top" width="300px"> <Text  text="Description" /> </Column>
+                                            <Column vAlign="Top" width="200px"> <Text  text="Primary Category" /> </Column>
+                                            <Column vAlign="Top" width="200px"> <Text  text="Sub Category" /> </Column>
+                                            <Column vAlign="Top" width="150px"> <Text  text="Access Type" /> </Column>
+                                            <Column vAlign="Top" width="100px"> <Text  text="CUI" /> </Column>
+                                            <Column vAlign="Top" width="150px"> <Text  text="Load Status" /> </Column>
+                                            <Column vAlign="Top" width="150px"> <Text  text="Load Frequency" /> </Column>
+                                            <Column vAlign="Top" width="200px" 
+                                                visible="{path: 'USER_MODEL>/admin', formatter: '.formatter.isAdmin'}" > <Text  text= "S3 Path"/> </Column>
+                                            <Column vAlign="Top" width="200px" 
+                                                visible="{path: 'USER_MODEL>/admin', formatter: '.formatter.isAdmin'}" > <Text  text= "Path" /> </Column>
+                                            <Column vAlign="Top" width="100px"> <Text  text="Data Card Status" /> </Column>
+                                            <Column vAlign="Top" width="200px"> <Text  text="Last Updated" /> </Column>
+                                            <Column vAlign="Top" width="150px"> <Text  text="Last Updated By" /> </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem vAlign="Middle">
+                                                <cells>
+                                                    <HBox>
+                                                        <items>
+                                                            <Button icon="sap-icon://edit" type="Transparent" customData:id="{DATA_SET_ID}" press="openManifestDialog" />
+                                                            <Button icon="sap-icon://delete" type="Transparent" customData:id="{DATA_SET_ID}" press="deleteManifestRow" />
+                                                        </items>
+                                                    </HBox>
+                                                    <Text text="{NAME}" />
+                                                    <Text text="{SOURCE}" />
+                                                    <Text text="{DESCRIPTION}" />
+                                                    <HBox>
+                                                        <items>
+                                                            <core:Icon size="18px" src="{path: 'PRIME_CATEGORY', formatter: '.formatter.getDatasetIcon'}" class="sapUiTinyMarginEnd" />
+                                                            <Text text="{PRIME_CATEGORY}" />
+                                                        </items>
+                                                    </HBox>
+                                                    <Text text="{SUB_CATEGORY}" />
+                                                    <Text text="{ACCESS_TYPE}" />
+                                                    <core:Icon size="18px" src="{path: 'CLASSIFICATION', formatter: '.formatter.isClassifiedIcon'}"
+                                                        color="{path: 'CLASSIFICATION', formatter: '.formatter.isClassifiedColor'}"/>
+                                                    <Text text="{LOAD_STATUS}" />
+                                                    <Text text="{LOAD_FREQUENCY}" /> 
+                                                    <Text text="{DATANODE_PATH}" />
+                                                    <Text text="{PATH}" /> 
+                                                    <tnt:InfoLabel width="165px"
+                                                        text="{path: 'DATA_CARD_STATUS', formatter: '.formatter.infoLabelStatus'}"
+                                                        colorScheme="{path: 'DATA_CARD_STATUS', formatter: '.formatter.infoLabelColorScheme'}" />
+                                                    <Text text="{path: 'LAST_MOD_DATE', formatter: '.formatter.modDateTime'}" />
+                                                    <Text text="{LAST_MOD_BY}" /> 
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </content>
+                            </ScrollContainer>
+                        </l:BlockLayoutCell>
+                    </l:content>
+                </l:BlockLayoutRow>
+            </l:content>
+        </l:BlockLayout>
+    </Page>
+</mvc:View>

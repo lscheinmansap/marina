@@ -1,0 +1,247 @@
+<mvc:View class="sapUiSizeCompact"
+    controllerName="marina.controller.DataSearch"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="false">
+        <l:BlockLayout background="Dashboard">
+            <l:content>
+                <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell width="3">
+                            <l:content>
+                                <ScrollContainer id="dataScrollContainer" vertical="true">
+                                    <content>
+                                        <List id="searchResultsList" class="searchResultsList"
+                                        		items="{
+                                                path: '/results/results',
+                                                sorter: {
+                                                    path: 'Name',
+                                                    descending: false,
+                                                    group: '.groupFunction'
+                                                }
+                                            }">
+                                            <headerToolbar growing="false">
+                                                <Toolbar>
+                                                    <content>
+                                                        <core:Icon src="sap-icon://database" color="#6a6d70" size="20px" class="sapUiTinyMarginEnd" />
+                                                        <Label text="{i18n>dataSets}" class="sapUiSmallMarginEnd" />
+                                                        <Label text="{/results/total} {i18n>results}" class="sapUiSmallMarginEnd" />
+                                                        <ToolbarSpacer />
+                                                        <core:Fragment fragmentName="marina.view.fragment.ResultsPager" type="XML" />
+                                                        <ToolbarSpacer />
+                                                        <MenuButton id="sortButton" width="150px" text="{i18n>lastModified}" icon="sap-icon://sort" >
+                                                            <menu>
+                                                                <Menu>
+                                                                    <MenuItem key="LAST_MOD_DATE" text="{i18n>lastModified}" press="searchData" />
+                                                                    <MenuItem key="NUM_VIEWS" text="{i18n>popularity}" press="searchData" />
+                                                                    <MenuItem key="NAME" text="{i18n>name}" press="searchData" />
+                                                                    <MenuItem key="NUM_FILES" text="# Files" press="searchData" />
+                                                                </Menu>
+                                                            </menu>
+                                                        </MenuButton>
+                                                        <SegmentedButton selectedKey="dsc" >
+                                                            <items>
+                                                                <SegmentedButtonItem key="dsc" icon="sap-icon://sort-descending" press="searchData" />
+                                                                <SegmentedButtonItem key="asc" icon="sap-icon://sort-ascending" press="searchData" />
+                                                            </items>
+                                                        </SegmentedButton>
+                                                    </content>
+                                                </Toolbar>
+                                            </headerToolbar>
+                                            <layoutData> <FlexItemData maxWidth="100%" minWidth="100%"/> </layoutData>
+                                            <CustomListItem 
+                                                type="Navigation"
+                                                customData:id="{DATA_SET_ID}"
+                                                press="navToDataSet" >
+                                                <content>
+                                                    <HBox width="100%">
+                                                        <items>
+                                                            <core:Icon 
+                                                                src="{path: 'PRIME_CATEGORY', formatter: '.formatter.getDatasetIcon'}" 
+                                                                class="sapUiContentPadding searchResultsIcon" />
+                                                            <VBox width="75%" class="searchResultsText sapUiSmallMarginEnd">
+                                                                <items>
+                                                                    <HBox alignItems="Center">
+                                                                        <items>
+                                                                            <Title text="{NAME}" wrapping="true" class="searchResultsTitle"/>
+                                                                        </items>
+                                                                    </HBox>
+                                                                    <HBox class="searchResultsFooter">
+                                                                        <items>
+                                                                            <Link 
+                                                                                text="{SOURCE}" 
+                                                                                target="_blank" 
+                                                                                href="{URL}" 
+                                                                                class="linkPadding"
+                                                                                enabled="{path: 'URL', formatter: '.formatter.getURL'}" />
+                                                                            <ToolbarSpacer/>
+                                                                            <Label 
+                                                                                text="{path: 'LAST_MOD_DATE', formatter: '.formatter.modDateTimeLLLL'}" />
+                                                                            <Text 
+                                                                                text="{DESCRIPTION}" 
+                                                                                class="searchResultsDesc"/>
+                                                                        </items>
+                                                                    </HBox>
+
+                                                                </items>
+                                                            </VBox>
+                                                            <VBox class="searchResultsSubTitle">
+                                                                <items>
+                                                                    <RatingIndicator iconSize="16px" maxValue="5" editable="false" 
+                                                                        tooltip="Rating based on number of user views"
+                                                                        value="{path: 'NUM_VIEWS', formatter: '.formatter.getRating'}" 
+                                                                        class="searchResultsRating"/>
+                                                                    <GenericTag text="{CLASSIFICATION}" design="StatusIconHidden" 
+                                                                        class="sapUiMediumMarginEnd sapUiTinyMarginBottom"
+                                                                        status="{path: 'CLASSIFICATION', formatter: '.formatter.getClassification'}" />
+                                                                    <VBox>
+                                                                        <items>
+                                                                            <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                                                                                <items>
+                                                                                    <core:Icon src="sap-icon://documents" color="#427CAC" class="sapUiTinyMarginEnd" />
+                                                                                    <Label text="{path: 'NUM_FILES', formatter: '.formatter.getNumberOfFiles'}" />
+                                                                                </items>
+                                                                            </HBox>
+                                                                        </items>
+                                                                    </VBox>
+                                                                </items>
+                                                            </VBox>
+                                                        </items>
+                                                    </HBox>
+                                                </content>    
+                                            </CustomListItem >
+                                        </List>
+                                    </content>
+                                </ScrollContainer>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell width="1">
+                            <l:content>
+                                <Toolbar class="sapUiSmallMarginBottom">
+                                    <content>
+                                        <core:Icon src="sap-icon://filter" class="sapUiTinyMarginEnd" />
+                                        <Title text="FILTERS" />
+                                        <ToolbarSpacer/>
+                                        <core:Icon src="sap-icon://decline" />
+                                        <Link text="Clear All" subtle="true" press="clearAllFilters" />
+                                    </content>
+                                </Toolbar>
+                                <VBox>
+                                    <items>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween" >
+                                            <items>
+                                                <Label text="Keyword" />
+                                            </items>
+                                        </HBox>
+                                        <SearchField id="dataSearch" placeholder="Keyword" width="100%" 
+                                            search="searchData" class="sapUiMediumMarginBottom" />
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Date Range" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchData" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <DateRangeSelection id="dataDateRange" valueFormat="YYYY-MM-YY" 
+                                            change="searchData" class="sapUiMediumMarginBottom" />
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Classification" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchData" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="dataClassificationList" showSecondaryValues="true"
+                                            selectionFinish="searchData" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/classifications'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Source" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchData" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="dataSourceList" showSecondaryValues="true"
+                                            selectionFinish="searchData" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/dataSetSources'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Category" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchData" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="dataCategoryList" showSecondaryValues="true"
+                                            selectionFinish="searchData" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/dataSetCategories'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Load Frequency" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchData" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="dataLoadFrequencyList" showSecondaryValues="true"
+                                            selectionFinish="searchData" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/dataSetLoadFreqs'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="File Type" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchData" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="dataFileTypeList" showSecondaryValues="true"
+                                            selectionFinish="searchData" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/dataSetFileTypes'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                    </items>
+                                </VBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                    </l:content>
+                </l:BlockLayoutRow>
+            </l:content>
+        </l:BlockLayout>
+    </Page>
+</mvc:View>

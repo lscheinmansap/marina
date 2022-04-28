@@ -1,0 +1,25 @@
+<core:FragmentDefinition 
+    xmlns="sap.uxap"
+    xmlns:core="sap.ui.core">
+    <ObjectPageLayout
+        enableLazyLoading="true"
+        useIconTabBar="true"
+        showTitleInHeaderContent="false"
+        toggleHeaderOnTitleClick="false"
+        showHeaderContent="false">
+        <headerTitle>
+            <ObjectPageHeader objectTitle="Data & Imagery Broker: {/help/page/PAGE_DISPLAY_NAME}"/>
+        </headerTitle>
+        <sections>
+            <ObjectPageSection title="{SECTION_NAME}">
+                <subSections>
+                    <ObjectPageSection title="{SECTION_NAME}">
+                        <blocks>
+                            <core:HTML content="{HELP_TEXT}" />
+                        </blocks>
+                    </ObjectPageSection>
+                </subSections>
+            </ObjectPageSection>
+        </sections>
+    </ObjectPageLayout>
+</core:FragmentDefinition>

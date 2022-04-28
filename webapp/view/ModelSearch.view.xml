@@ -1,0 +1,206 @@
+<mvc:View class="sapUiSizeCompact"
+    controllerName="marina.controller.ModelSearch"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="false">
+        <l:BlockLayout background="Dashboard">
+            <l:content>
+                <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell width="3">
+                            <l:content>
+                                <ScrollContainer id="modelScrollContainer" vertical="true">
+                                    <content>
+                                        <List id="modelResultsList" class="modelResultsList"
+                                        		items="{
+                                                path: '/results/results',
+                                                sorter: {
+                                                    path: 'Name',
+                                                    descending: false,
+                                                    group: '.groupFunction'
+                                                }
+                                            }">
+                                            <headerToolbar growing="false">
+                                                <Toolbar>
+                                                    <content>
+                                                        <core:Icon src="sap-icon://radar-chart" color="#6a6d70" size="20px" class="sapUiTinyMarginEnd" />
+                                                        <Label text="Models" class="sapUiSmallMarginEnd" />
+                                                        <Label text="{/results/total} {i18n>results}" class="sapUiSmallMarginEnd" />
+                                                        <ToolbarSpacer />
+                                                        <core:Fragment fragmentName="marina.view.fragment.ResultsPager" type="XML" />
+                                                        <ToolbarSpacer />
+                                                        <MenuButton id="modelSortButton" width="150px" text="{i18n>lastModified}" icon="sap-icon://sort" >
+                                                            <menu>
+                                                                <Menu>
+                                                                    <MenuItem key="LAST_UPDATED_TIMESTAMP" text="{i18n>lastModified}" press="searchModels" />
+                                                                    <MenuItem key="NUM_VIEWS" text="{i18n>popularity}" press="searchModels" />
+                                                                    <MenuItem key="MODEL_NAME" text="{i18n>name}" press="searchModels" />
+                                                                </Menu>
+                                                            </menu>
+                                                        </MenuButton>
+                                                        <SegmentedButton id="modelSortDir" selectedKey="desc" >
+                                                            <items>
+                                                                <SegmentedButtonItem key="dsc" icon="sap-icon://sort-descending" press="searchModels" />
+                                                                <SegmentedButtonItem key="asc" icon="sap-icon://sort-ascending" press="searchModels" />
+                                                            </items>
+                                                        </SegmentedButton>
+                                                    </content>
+                                                </Toolbar>
+                                            </headerToolbar>
+                                            <layoutData> <FlexItemData maxWidth="100%" minWidth="100%"/> </layoutData>
+                                            <CustomListItem 
+                                                type="Navigation"
+                                                customData:id="{MODEL_CARD_ID}"
+                                                press="navToModel" >
+                                                <content>
+                                                    <HBox width="100%">
+                                                        <items>
+                                                            <core:Icon 
+                                                                src="sap-icon://overview-chart" 
+                                                                class="sapUiContentPadding searchResultsIcon" />
+                                                            <VBox width="75%" class="searchResultsText sapUiSmallMarginEnd">
+                                                                <items>
+                                                                    <HBox alignItems="Center">
+                                                                        <items>
+                                                                            <Title text="{MODEL_NAME}" wrapping="true" class="searchResultsTitle"/>
+                                                                        </items>
+                                                                    </HBox>
+                                                                    <HBox class="searchResultsFooter">
+                                                                        <items>
+                                                                            <Label 
+                                                                                text="{MODEL_DEVELOPER}" />
+                                                                            <Label 
+                                                                                text="{path: 'LAST_UPDATED_TIMESTAMP', formatter: '.formatter.modDateTimeLLLL'}" />
+                                                                        </items>
+                                                                    </HBox>
+                                                                    <Text 
+                                                                        text="{DESCRIPTION}" 
+                                                                        class="searchResultsDesc"/>
+                                                                </items>
+                                                            </VBox>
+                                                            <VBox class="searchResultsSubTitle">
+                                                                <items>
+                                                                    <RatingIndicator iconSize="16px" maxValue="5" editable="false" 
+                                                                        tooltip="Rating based on number of user views"
+                                                                        value="{path: 'NUM_VIEWS', formatter: '.formatter.getRating'}" 
+                                                                        class="searchResultsRating"/>
+                                                                    <GenericTag text="{MODEL_CLASSIFICATION}" design="StatusIconHidden" 
+                                                                        class="sapUiMediumMarginEnd sapUiTinyMarginBottom"
+                                                                        status="{path: 'MODEL_CLASSIFICATION', formatter: '.formatter.getClassification'}" />
+                                                                    <VBox>
+                                                                        <items>
+                                                                            <HBox alignItems="Center" class="sapUiTinyMarginBottom">
+                                                                                <items>
+                                                                                    <core:Icon src="sap-icon://database" color="#427CAC" class="sapUiTinyMarginEnd" />
+                                                                                    <Label text="{path: 'NUM_DATA_SETS', formatter: '.formatter.getNumberOfFiles'}" />
+                                                                                </items>
+                                                                            </HBox>
+                                                                        </items>
+                                                                    </VBox>
+                                                                </items>
+                                                            </VBox>
+                                                        </items>
+                                                    </HBox>
+                                                </content>    
+                                            </CustomListItem >
+                                        </List>
+                                    </content>
+                                </ScrollContainer>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                        <l:BlockLayoutCell width="1">
+                            <l:content>
+                                <Toolbar class="sapUiSmallMarginBottom">
+                                    <content>
+                                        <core:Icon src="sap-icon://filter" class="sapUiTinyMarginEnd" />
+                                        <Title text="FILTERS" class="filtersHeader" />
+                                        <ToolbarSpacer/>
+                                        <core:Icon src="sap-icon://decline" class="filterClear" />
+                                        <Link text="Clear All" subtle="true" press="clearAllFilters" class="filterClear" />
+                                    </content>
+                                </Toolbar>
+                                <VBox>
+                                    <items>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween" >
+                                            <items>
+                                                <Label text="Keyword" />
+                                            </items>
+                                        </HBox>
+                                        <SearchField id="modelSearch" placeholder="Keyword" width="100%" 
+                                            search="searchModels" class="sapUiMediumMarginBottom" />
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Date Range" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchModel" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <DateRangeSelection id="modelDateRange" valueFormat="YYYY-MM-YY" 
+                                            change="searchModels" class="sapUiMediumMarginBottom" />
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Classification" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchModel" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="modelClassificationList" showSecondaryValues="true"
+                                            selectionFinish="searchModels" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/classifications'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Model Type" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchModel" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                        <MultiComboBox id="modelTypesList" showSecondaryValues="true"
+                                            selectionFinish="modelTypes" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/classifications'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                        <HBox alignContent="SpaceBetween" justifyContent="SpaceBetween">
+                                            <items>
+                                                <Label text="Model Developer" />
+                                                <HBox>
+                                                    <items>
+                                                        <core:Icon src="sap-icon://decline" press="searchModel" />
+                                                    </items>
+                                                </HBox>
+                                            </items>
+                                        </HBox>
+                                         <MultiComboBox id="modelDeveloperList" showSecondaryValues="true"
+                                            selectionFinish="searchModels" class="sapUiMediumMarginBottom"
+                                            items="{
+												path: '/modelDevelopers'
+											}">
+                                            <core:ListItem key="{NAME}" text="{NAME}" additionalText="{TOTAL}"/>
+                                        </MultiComboBox>
+                                    </items>
+                                </VBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                    </l:content>
+                </l:BlockLayoutRow>
+            </l:content>
+        </l:BlockLayout>
+    </Page>
+</mvc:View>

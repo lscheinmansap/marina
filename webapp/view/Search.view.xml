@@ -1,0 +1,62 @@
+<mvc:View
+    controllerName="marina.controller.Search"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="false">
+        <l:BlockLayout background="Dashboard">
+            <l:content>
+                <l:BlockLayoutRow>
+                    <l:content>
+                        <l:BlockLayoutCell>
+                            <l:content>
+                                <VBox width="100%">
+                                    <items>
+                                        <HBox width="100%" justifyContent="Center" alignItems="Stretch">
+                                            <items>
+                                                <SearchField id="globalSearch" placeholder="Keyword" search="search"/>
+                                            </items>
+                                        </HBox>
+                                        <IconTabBar select="filter" stretchContentHeight="false" selectedKey="ALL" expandable="false" tabDensityMode="Cozy">
+                                            <items>
+                                                <IconTabFilter showAll="true" text="Results" key="ALL" count="{/total}"/>
+                                                <IconTabFilter icon="sap-icon://database" text="Data" key="DATASET" count="{/datasetTotal}"/>
+                                                <IconTabFilter icon="sap-icon://radar-chart" text="Models" key="MODEL" count="{/modelTotal}"/>
+                                                <IconTabFilter icon="sap-icon://image-viewer" text="Imagery" key="IMAGERY" count="{/imageryTotal}"/>
+                                            </items>
+                                            <content>
+                                                <ScrollContainer vertical="true">
+                                                    <content>
+                                                        <List 
+                                                            id="globalSearchList" 
+                                                            noDataText="No results Found" 
+                                                            items="{
+                                                                path: '/results'
+                                                                }">
+                                                            <items>
+                                                                <StandardListItem
+                                                                    type="Navigation"
+                                                                    title="{NAME}"
+                                                                    description="{OBJECT_TIMESTAMP}"
+                                                                    info="{CLASSIFICATION}"
+                                                                    icon="{ICON}"
+                                                                    customData:objectId="{OBJECT_ID}"
+                                                                    customData:objectType="{OBJECT_TYPE}"
+                                                                    press="navToDetail"/>
+                                                            </items>
+                                                        </List>
+                                                    </content>
+                                                </ScrollContainer>
+                                            </content>
+                                        </IconTabBar>
+                                    </items>
+                                </VBox>
+                            </l:content>
+                        </l:BlockLayoutCell>
+                    </l:content>
+                </l:BlockLayoutRow>
+            </l:content>
+        </l:BlockLayout>
+    </Page>
+</mvc:View>

@@ -1,0 +1,93 @@
+<mvc:View
+    controllerName="marina.controller.Launchpad"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.f"
+    xmlns:tnt="sap.tnt"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    displayBlock="false">
+    <tnt:ToolPage id="toolPage">
+        <tnt:header>
+            <f:ShellBar id="shell" showMenuButton="true" showNotifications="false" title="{i18n>federatedDataBroker}">
+                <f:additionalContent>
+                    <Button id="datasetIndicator" width="auto" icon="sap-icon://database" tooltip="{i18n>myDataSetUpdates}" press="getSubscriptions">
+                        <customData>
+                            <BadgeCustomData key="badge"/>
+                        </customData>
+                    </Button>
+                    <Button id="rejectionIndicator" width="auto" icon="sap-icon://employee-rejections" tooltip="{i18n>myCardRejectionss}" press="getRejections">
+                        <customData>
+                            <BadgeCustomData key="badge"/>
+                        </customData>
+                    </Button>
+                    <Button id="approvalsIndicator" width="auto" icon="sap-icon://approvals" tooltip="{i18n>myApprovals}" press="getApprovals">
+                        <customData>
+                            <BadgeCustomData key="badge"/>
+                        </customData>
+                    </Button>
+                    <Button id="downloadsIndicator" width="auto" icon="sap-icon://download" tooltip="{i18n>myDataSetDownloads}" press="getDownloads">
+                        <customData>
+                            <BadgeCustomData key="badge" />
+                        </customData>
+                    </Button>
+                    <Button id="userButton" width="auto" icon="sap-icon://customer" tooltip="{i18n>userPreferences}" press="openUserMenu" />
+                </f:additionalContent>
+            </f:ShellBar>
+        </tnt:header>
+        <tnt:sideContent>
+            <tnt:SideNavigation>
+                <tnt:NavigationList>
+                    <tnt:items>
+                        <tnt:NavigationListItem key="overview" text="{i18n>overview}" icon="sap-icon://bbyd-dashboard" select="navToOverview"/>
+                        <tnt:NavigationListItem key="search" text="{i18n>search}" icon="sap-icon://search" select="navToSearch"/>
+                        <tnt:NavigationListItem key="data" text="{i18n>data}" icon="sap-icon://database" select="navToDataSearch"/>
+                        <tnt:NavigationListItem key="models" text="{i18n>models}" icon="sap-icon://radar-chart" select="navToModelSearch"/>
+                        <tnt:NavigationListItem key="imagery" text="{i18n>imagery}" icon="sap-icon://image-viewer" select="navToImagerySearch"/>
+                        <tnt:NavigationListItem key="streams" text="{i18n>liveStreams}" icon="sap-icon://video" select="navToStreams" />
+                        <tnt:NavigationListItem key="adhoc" text="{i18n>adHocReporting}" icon="sap-icon://business-objects-experience"/>
+                        <tnt:NavigationListItem key="di" text="{i18n>dataOrchestration}" icon="sap-icon://provision" />
+                        <tnt:NavigationListItem key="cardMgmt" text="{i18n>cardManagement}" icon="sap-icon://documents" expanded="false">
+                            <tnt:items>
+                                <tnt:NavigationListItem key="newDataCard" text="{i18n>createDataCard}" select="createDataCard"/>
+                                <tnt:NavigationListItem key="newModelCard" text="{i18n>createModelCard}" select="createModelCard"/>
+                                <tnt:NavigationListItem key="cards" text="{i18n>viewMyCards}" select="navToMyCards"/>
+                                <tnt:NavigationListItem key="approvals" text="{i18n>viewMyApprovals}" select="navToMyApprovals"/>
+                            </tnt:items>
+                        </tnt:NavigationListItem>
+                    </tnt:items>
+                    <tnt:NavigationListItem key="compass" text="{i18n>linkAnalysis}" icon="sap-icon://overview-chart" expanded="false" select="navToCompass">
+                        <tnt:items>
+                            <tnt:NavigationListItem key="openExploreGraph" text="Explore Graph" select="linkAnalysisDialogOpen"/>
+                            <tnt:NavigationListItem key="openCreateNode" text="Create Node" select="linkAnalysisDialogOpen"/>
+                            <tnt:NavigationListItem key="openEditNode" text="Edit Node" select="linkAnalysisDialogOpen"/>
+                            <tnt:NavigationListItem key="openNodesMerge" text="Merge Nodes" select="linkAnalysisDialogOpen"/>
+                            <tnt:NavigationListItem key="openEdgeCreate" text="Create Edge" select="linkAnalysisDialogOpen"/>
+                        </tnt:items>
+                    </tnt:NavigationListItem>
+                </tnt:NavigationList>
+                <tnt:fixedItem>
+                        <tnt:NavigationList>
+                            <tnt:NavigationListItem key="help" text="Help" icon="sap-icon://sys-help" select="openHelp"/>
+                            <tnt:NavigationListItem key="admin" text="Administration" icon="sap-icon://key-user-settings" select="navToManifest"/>
+                        </tnt:NavigationList>
+                </tnt:fixedItem>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+        <tnt:mainContents>
+            <App id="marinaApp"/>
+        	<!--NavContainer id="app" initialPage="overview">
+                <pages>
+                    <ScrollContainer id="overview" horizontal="false" vertical="true" height="100%">
+                        <mvc:XMLView viewName="marina.view.Overview" />
+                    </ScrollContainer>
+                    <ScrollContainer id="search" horizontal="false" vertical="true" height="100%">
+                        <mvc:XMLView viewName="marina.view.Search" />
+                    </ScrollContainer>
+                    <ScrollContainer id="compass" horizontal="false" vertical="true" height="100%">
+                        <mvc:XMLView viewName="marina.view.Compass" />
+                    </ScrollContainer>
+                </pages>
+            </NavContainer-->
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>

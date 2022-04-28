@@ -1,0 +1,46 @@
+{
+  "dependencies": {
+  	"express": "^4.17.1",
+    "@sap/hana-client": "^2.4.139",
+    "@sap/hdbext": "^6.2.2",
+    "@sap/xsenv": "latest",
+    "@sap/xssec": "latest",
+    "@sap/logging": "latest",
+    "passport": "latest",
+    "async": "latest",
+    "body-parser": "latest",
+    "pdf-lib": "1.10.0",
+    "pdfkit": "latest",
+    "fs": "latest",
+    "moment": "latest",
+    "json2csv": "latest",
+    "child_process": "latest",
+    "request": "latest",
+    "based-blob": "latest",
+    "aws-config": "^1.4.0",
+    "aws-sdk": "^2.802.0",
+    "http": "latest",
+    "https": "latest",
+    "uuid": "latest",
+    "stringify-object": "^3.3.0",
+    "config": "3.3.3",
+    "compression": "latest"
+  },
+  "description": "my description",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0"
+  },
+  "files": [],
+  "main": "server.js",
+  "name": "nodejs",
+  "scripts": {
+    "test": "node node_modules/jest/bin/jest --config jest.json",
+    "test-coverage": "node node_modules/jest/bin/jest --coverage --config jest.json",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "version": "1.0.0"
+}

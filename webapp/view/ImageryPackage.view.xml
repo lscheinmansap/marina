@@ -1,0 +1,15 @@
+<mvc:View
+    controllerName="marina.controller.ImageryPackage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.f">
+    <FlexibleColumnLayout id="imageryFcl"
+        backgroundDesign="Translucent"
+        layout="{/layout}">
+        <beginColumnPages>
+            <mvc:XMLView viewName="marina.view.ImageryPackageMaster" />
+        </beginColumnPages>
+        <midColumnPages>
+            <mvc:XMLView viewName="marina.view.ImageryPackageDetail" />
+        </midColumnPages>
+    </FlexibleColumnLayout>
+</mvc:View>

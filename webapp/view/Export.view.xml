@@ -1,0 +1,49 @@
+<mvc:View
+    controllerName="marina.controller.DataSet"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <VBox
+        alignContent="Stretch"
+        fitContainer="true"
+        class="sapUiSizeCompact">
+        <f:SimpleForm
+            width="100%"
+            layout="ResponsiveGridLayout"
+            labelSpanXL="4"
+            labelSpanM="4"
+            labelSpanS="4"
+            labelSpanXS="2"
+            adjustLabelSpan="false"
+            columnsM="2"
+            columnsXL="2"
+            columnsS="2"
+            columnsXS="2"
+            emptySpanXL="0"
+            emptySpanM="0"
+            singleContainerFullSize="false"
+            class="sapUiSizeCompact sapUiSmallMarginBottom"
+            >
+            <f:content>
+                <Label text="Dataset Name" />
+                <Text text="" />
+                <Label text="Table Name" />
+                <Text text="" />
+                <Label text="Total Rows" />
+                <Text text="" />
+                <core:Title />
+                <Label text="Starting Row" textAlign="Center" vAlign="Bottom" class="exportControl" />
+                <Input id="startExportRow" width="130px" value="1" />
+                <Label text="# Rows Export" textAlign="Center" vAlign="Bottom" class="exportControl" />
+                <Input id="numExportRows" width="130px" value="1" />
+                <Label text="Format" textAlign="Center" vAlign="Bottom" class="exportControl" />
+                <RadioButtonGroup id="exportFormat" columns="2" />
+                    <buttons>
+                        <RadioButton id="csv" text="CSV" />
+                        <RadioButton id="json" text="JSON" />
+                    </buttons>
+            </f:content>
+        </f:SimpleForm>
+    </VBox>
+</mvc:View>

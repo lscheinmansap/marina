@@ -1,0 +1,43 @@
+<mvc:View
+    controllerName="marina.controller.Compass"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns="sap.m">
+    <l:ResponsiveSplitter>
+        <l:PaneContainer>
+            <l:PaneContainer orientation="Vertical">
+                <l:SplitPane>
+                    <l:layoutData>
+                        <l:SplitterLayoutData size="600px"/>
+                    </l:layoutData>
+                    <mvc:XMLView viewName="marina.view.NetworkGraph" />
+                </l:SplitPane>
+                <l:SplitPane >
+                    <l:layoutData>
+                        <l:SplitterLayoutData/>
+                    </l:layoutData>
+                    <mvc:XMLView viewName="marina.view.NodeSummary" />
+                </l:SplitPane>
+            </l:PaneContainer>
+            <l:PaneContainer orientation="Vertical">
+                <l:SplitPane>
+                    <l:layoutData>
+                        <l:SplitterLayoutData size="700px"/>
+                    </l:layoutData>
+                    <mvc:XMLView viewName="marina.view.GeoMap" />
+                </l:SplitPane>
+                <l:SplitPane requiredParentWidth="400" >
+                    <l:layoutData>
+                        <l:SplitterLayoutData size="auto"/>
+                    </l:layoutData>
+                    <mvc:XMLView viewName="marina.view.TimeSeries" />
+                </l:SplitPane>
+            </l:PaneContainer>
+        </l:PaneContainer>
+    </l:ResponsiveSplitter>
+    <mvc:XMLView viewName="marina.view.GraphExplorer" />
+    <mvc:XMLView viewName="marina.view.NodeCreate" />
+    <mvc:XMLView viewName="marina.view.NodeEdit" />
+    <mvc:XMLView viewName="marina.view.NodesMerge" />
+    <mvc:XMLView viewName="marina.view.EdgeCreate" />
+</mvc:View>

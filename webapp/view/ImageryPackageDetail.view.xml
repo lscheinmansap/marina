@@ -1,0 +1,263 @@
+<mvc:View
+    controllerName="marina.controller.ImageryPackageDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:ux="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:mc="sap.suite.ui.microchart"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <ux:ObjectPageLayout id="clipOpl" 
+        useIconTabBar="true"
+        showTitleInHeaderContent="true"
+        alwaysShowContentHeader="false"
+        preserveHeaderStateOnScroll="false"
+        headerContentPinnable="true"
+        isChildPage="true"
+        upperCaseAnchorBar="false">
+        <ux:headerTitle>
+            <ux:ObjectPageDynamicHeaderTitle>
+                <ux:snappedHeading>
+                    <FlexBox class="sapUiTinyMarginEnd"
+                        wrap="Wrap"
+                        alignItems="Center"
+                        fitContainer="true">
+                        <core:Icon src="sap-icon://video" size="25px" color="#0854a0" class="sapUiSmallMarginEnd" />
+                        <Title text="{/clip/CLIP_NAME}" wrapping="true" />
+                    </FlexBox>
+                </ux:snappedHeading>
+                <ux:expandedHeading>
+                    <FlexBox class="sapUiTinyMarginEnd"
+                        wrap="Wrap"
+                        alignItems="Center"
+                        fitContainer="true">
+                        <core:Icon src="sap-icon://video" size="25px" color="#0854a0" class="sapUiSmallMarginEnd" />
+                        <Title text="{/clip/CLIP_NAME}" wrapping="true" />
+                    </FlexBox>
+                </ux:expandedHeading>
+                <ux:navigationActions>
+                    <OverflowToolbarButton 
+                        type="Transparent"
+                        icon="sap-icon://decline"
+                        press="handleClose"
+                        tooltip="Close column"
+                        visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+                </ux:navigationActions>
+                <ux:actions>
+                    <Button 
+                        press="playClip"
+                        icon="sap-icon://media-play"
+                        text="Play"
+                        tooltip="Play Clip"
+                        customData:id="{/clip/SEQUENCE_CLIP_UUID}"
+                        customData:name="{/clip/CLIP_NAME}"
+                        customData:path="{/clip/SEQUENCE_CLIP_FILE_PATH}" />
+                    <Button icon="sap-icon://download"
+                        text="Export"
+                        tooltip="Export Clip"
+                        press="downloadImageFiles"/>
+                </ux:actions>
+
+            </ux:ObjectPageDynamicHeaderTitle>
+        </ux:headerTitle>
+        <ux:headerContent>
+            <HBox class="headerContentSection"
+                wrap="Wrap"
+                alignItems="Stretch"
+                justifyContent="SpaceBetween">
+                <items>
+                    <VBox class="headerContentSection">
+                        <items>
+                            <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                                <items>
+                                    <Label text="Classification: " class="sapUiSmallMarginEnd dsLabel"/>
+                                    <Text text="{/clip/CLASSIFICATION}" />
+                                </items>
+                            </HBox>
+                            <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                                <items>
+                                    <Label text="Start Timestamp: " class="sapUiSmallMarginEnd dsLabel"/>
+                                    <Text text="{path: '/clip/START_TIME_STAMP', formatter: '.formatter.modDateTime'}" />
+                                </items>
+                            </HBox>
+                            <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                                <items>
+                                    <Label text="End Timestamp: " class="sapUiSmallMarginEnd dsLabel"/>
+                                    <Text text="{path: '/clip/END_TIME_STAMP', formatter: '.formatter.modDateTime'}" />
+                                </items>
+                            </HBox>
+                            <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                                <items>
+                                    <Label text="Offset: " class="sapUiSmallMarginEnd dsLabel"/>
+                                    <Text text="{/clip/CLIP_VIDEO_OFFSET_SECONDS} secs" />
+                                </items>
+                            </HBox>
+                            <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                                <items>
+                                    <Label text="File Size: " class="sapUiSmallMarginEnd dsLabel"/>
+                                    <Text text="{path: '/clip/FILE_SIZE_BYTES', formatter: '.formatter.humanFileSize'}" />
+                                </items>
+                            </HBox>
+                            <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                                <items>
+                                    <Label text="Duration: " class="sapUiSmallMarginEnd dsLabel"/>
+                                    <Text text="{path: '/clip/DURATION_SECONDS', formatter: '.formatter.secsToMins'}" />
+                                </items>
+                            </HBox>
+                        </items>
+                    </VBox>
+                    <FlexBox
+                        width="25rem"
+                        height="12rem"
+                        alignItems="End"
+                        justifyContent="SpaceBetween">
+                        <items>
+                            <Toolbar>
+                                <content>
+                                    <Label text="Clip Objects" />
+                                </content>
+                            </Toolbar>
+                            <mc:InteractiveDonutChart
+                                segments="{clipLabels}"
+                                displayedSegments="7">
+                                <mc:segments>
+                                    <mc:InteractiveDonutChartSegment
+                                        label="{LABEL_NAME}"
+                                        value="{COUNT}"/>
+                                </mc:segments>
+                            </mc:InteractiveDonutChart>
+                        </items>
+                    </FlexBox>
+                </items>
+            </HBox>
+        </ux:headerContent>
+        <ux:sections>
+            <ux:ObjectPageSection title="Frames">
+                <ux:subSections>
+                    <ux:ObjectPageSubSection>
+                        <ux:blocks>
+                            <ScrollContainer vertical="true">
+                                <content>
+                                    <IconTabBar id="framesTabBar"
+                                        backgroundDesign="Translucent"
+                                        headerBackgroundDesign="Solid"
+                                        stretchContentHeight="false"
+                                        tabDensityMode="Compact"
+                                        expandable="false"
+                                        items="{/analysisTypes}"
+                                        select="getFramesByAnalysisType">
+                                        <items>
+                                            <IconTabFilter
+                                                iconColor="{ICON_COLOR}"
+                                                design="Horizontal"
+                                                count="{ANNOTATION_SOURCE}"
+                                                text="{ANALYSIS_TYPE}"
+                                                key="{ANNOTATION_SOURCE},{ANALYSIS_TYPE}"
+                                                icon="{path: 'ANALYSIS_TYPE', formatter: '.formatter.getAnnotationIcon'}"
+                                            />
+                                        </items>
+                                        <content>
+                                            <Table id="framesTable" class="fileTable"
+                                                items="{
+                                                    path: '/frames/results',
+                                                    sorter: {
+                                                        path: 'FRAME_FILENAME'
+                                                    }
+                                                }"
+                                                fixedLayout="true"
+                                                enableBusyIndicator="true"
+                                                alternateRowColors="true"
+                                                growing="true"
+                                                growingScrollToLoad="true"
+                                                noDataText="No Annotated Frames"
+                                                visible="{path: '/frames/total', formatter: '.formatter.greaterThanZero'}">
+                                                <OverflowToolbar design="Solid" style="Standard">
+                                                    <Label text="Frames  {/frames/total} total" class="resultsHeaderTotal"/>
+                                                    <ToolbarSpacer />
+                                                </OverflowToolbar>
+                                                <columns>
+                                                    <Column width="300px"> <Text text="Frame Filename" /> </Column>
+                                                    <Column demandPopin="true" minScreenWidth="Desktop">  <Text text="Sequence Frame" /> </Column>
+                                                    <Column demandPopin="true" minScreenWidth="Desktop">  <Text text="File Size" /> </Column>
+                                                    <Column demandPopin="true" minScreenWidth="Desktop">  <Text text="Timestamp" /> </Column>
+                                                </columns>
+                                                <items>
+                                                    <ColumnListItem
+                                                        type="Navigation" 
+                                                        press="onClickRow"
+                                                        customData:id="{SEQUENCE_FRAME_UUID}">
+                                                        <cells>
+                                                            <Text text="{FRAME_FILENAME}"/>
+                                                            <Text text="{SEQ_FRAME}"/>
+                                                            <Text text="{path: 'FILE_SIZE_BYTES', formatter: '.formatter.humanFileSize'}"/>
+                                                            <Text text="{path: 'ORIGINAL_TIMESTAMP', formatter: '.formatter.imgDateTimeStamp'}"/>
+                                                        </cells>
+                                                    </ColumnListItem>
+                                                </items>
+                                            </Table>
+                                            <MessagePage id="annotationMessage" 
+                                                visible="{path: '/frames/total', formatter: '.formatter.hasItems'}"
+                                                showHeader=""
+                                                enableFormattedText=""
+                                                text="No Annotations Found."
+                                                description="No clip annotations were found for {/selectedAnnoSource} {/selectedAnnoType}.  Click the Annotate button below to annotate the clip frames."
+                                                icon="sap-icon://tags">
+                                                <buttons>
+                                                    <Button text="Annotate" press="requestAnnotate" />
+                                                </buttons>
+                                            </MessagePage>
+                                        </content>
+                                    </IconTabBar>
+                                </content>
+                            </ScrollContainer>
+                        </ux:blocks>
+                    </ux:ObjectPageSubSection>
+                </ux:subSections>
+            </ux:ObjectPageSection>
+            <ux:ObjectPageSection>
+                <ux:subSections>
+                    <ux:ObjectPageSubSection>
+                        <ux:blocks>
+                            <f:SimpleForm layout="ColumnLayout" class="sapUiNoContentPadding">
+                                <f:content>
+                                    <Label text="Derivation Type" class="metadataLabel" />
+                                    <Text text="{/clip/DERIVATION_TYPE}" />
+                                    <Label text="Origin ID" class="metadataLabel" />
+                                    <Text text="{/clip/ORIGIN_ID}" />
+                                    <Label text="CODEC Name" class="metadataLabel" />
+                                    <Text text="{/clip/CODEC_NAME}" />
+                                    <Label text="Height" class="metadataLabel" />
+                                    <Text text="{/clip/HEIGHT}" />
+                                    <Label text="Width" class="metadataLabel" />
+                                    <Text text="{/clip/WIDTH}" />
+                                    <Label text="Pixel Format" class="metadataLabel" />
+                                    <Text text="{/clip/PIX_FMT}" />
+                                    <Label text="Bit Rate" class="metadataLabel" />
+                                    <Text text="{/clip/BIT_RATE}" />
+                                    <Label text="Bits Per Raw Sample" class="metadataLabel" />
+                                    <Text text="{/clip/BITS_PER_RAW_SAMPLE}" />
+                                    <Label text="KLV Name" class="metadataLabel" />
+                                    <Text text="{/clip/KLV_NAME}" />
+                                    <Label text="Frame Count" class="metadataLabel" />
+                                    <Text text="{path: '/clip/STREAM_COUNT', formatter: '.formatter.formatNumber'}"/>
+                                    <Label text="Format Name" class="metadataLabel" />
+                                    <Text text="{/clip/FORMAT_NAME}" />
+                                    <Label text="FPS" class="metadataLabel" />
+                                    <Text text="{/clip/FPS}" />
+                                    <Label text="Video Size" class="metadataLabel" />
+                                    <Text text="{path: '/clip/VIDEO_SIZE_BYTES', formatter: '.formatter.humanFileSize'}" />
+                                    <Label text="Batch Name" class="metadataLabel" />
+                                    <Text text="{/clip/BATCH_NAME}" />
+                                    <Label text="TE Designation" class="metadataLabel" />
+                                    <Text text="{/clip/TE_DESIGNATION}" />
+                                    <Label text="File Size" class="metadataLabel" />
+                                    <Text text="{path: '/clip/FILE_SIZE_BYTES', formatter: '.formatter.humanFileSize'}" />
+                                </f:content>
+                            </f:SimpleForm>
+                        </ux:blocks>
+                    </ux:ObjectPageSubSection>
+                </ux:subSections>
+            </ux:ObjectPageSection>
+        </ux:sections>
+    </ux:ObjectPageLayout>
+</mvc:View>

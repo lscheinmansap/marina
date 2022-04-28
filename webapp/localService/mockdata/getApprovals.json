@@ -1,0 +1,13 @@
+[
+    {
+        "username": "Test User",
+        "firstname": "Test",
+        "lastname": "User",
+        "admin": "TestUser",
+        "approver": "True",
+        "approverType": "Approver 1",
+        "cui": "CUI",
+        "uncontrolled": "True",
+        "editor": "True"
+    }
+]

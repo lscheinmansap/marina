@@ -1,0 +1,41 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <QuickView>
+        <pages>
+            <QuickViewPage
+                icon="sap-icon://video"
+                title="{/clip/CLIP_NAME}"
+                description="{/clipInfo/ORIGIN_ID}"
+                class="sapUiSizeCompact">
+                <groups>
+                    <QuickViewGroup>
+                        <elements>
+                            <QuickViewGroupElement
+                                label="Duration"
+                                value="{path: '/clipInfo/DURATION_SECONDS', formatter: '.formatter.secsToMins'}"/>
+                            <QuickViewGroupElement
+                                label="Bit Rate"
+                                value="{/clipInfo/BIT_RATE}"/>
+                            <QuickViewGroupElement
+                                label="File Size"
+                                value="{path: '/clipInfo/VIDEO_SIZE_BYTES', formatter: '.formatter.humanFileSize'}"/>
+                            <QuickViewGroupElement
+                                label="Frame Count"
+                                value="{path: '/clipInfo/FRAME_COUNT', formatter: '.formatter.formatNumber'}"/>
+                            <QuickViewGroupElement
+                                label="FPS"
+                                value="{/clipInfo/FPS}"/>
+                            <QuickViewGroupElement
+                                label="Start Timestamp"
+                                value="{path: '/clipInfo/START_TIMESTAMP', formatter: '.formatter.modDateTimeStamp'}"/>
+                            <QuickViewGroupElement
+                                label="End Timestamp"
+                                value="{path: '/clipInfo/END_TIMESTAMP', formatter: '.formatter.modDateTimeStamp'}"/>
+                        </elements>
+                    </QuickViewGroup>
+                </groups>
+            </QuickViewPage>
+        </pages>
+    </QuickView>
+</core:FragmentDefinition>

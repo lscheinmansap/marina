@@ -1,0 +1,474 @@
+<mvc:View
+    controllerName="marina.controller.DataSetMaster"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:c="sap.suite.ui.commons"
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:ux="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="true" title="Data Set Details" showNavButton="true" enableScrolling="true" navButtonPress="navBack">
+        <content>
+            <l:BlockLayout background="Dashboard">
+                <l:content>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell>
+                                <l:content>
+                                    <ux:ObjectPageLayout id="dataSetOpl"
+                                        enableLazyLoading="true"
+                                        useIconTabBar="true"
+                                        showTitleInHeaderContent="true"
+                                        toggleHeaderOnTitleClick="true"
+                                        showHeaderContent="true">
+                                        <ux:headerTitle>
+                                            <ux:ObjectPageDynamicHeaderTitle>
+                                                <ux:expandedHeading>
+                                                    <FlexBox alignItems="Center" fitContainer="true">
+                                                        <items>
+                                                            <core:Icon src="sap-icon://database" size="25px" class="sapUiSmallMarginEnd"/>
+                                                            <Title text="{/dataSet/NAME}" />
+                                                        </items>
+                                                    </FlexBox>
+                                                </ux:expandedHeading>
+                                                <ux:snappedHeading alignedItems="Center" fitContainer="true">
+                                                    <FlexBox alignItems="Center" fitContainer="true">
+                                                        <items>
+                                                            <core:Icon src="sap-icon://database" size="25px" color="#32363a" class="sapUiSmallMarginEnd"/>
+                                                            <Title text="{/dataSet/NAME}" />
+                                                        </items>
+                                                    </FlexBox>
+                                                </ux:snappedHeading>
+                                                <ux:actions>
+                                                    <Button 
+                                                        icon="sap-icon://download"
+                                                        text="Export" 
+                                                        tooltip="Export Data Set" 
+                                                        customData:id="{/dataSet/DATA_SET_ID}" 
+                                                        press="downloadFiles"/>
+                                                    <ToggleButton 
+                                                        icon="sap-icon://feed"
+                                                        text="{path: '/dataSet/IS_SUBSCRIBED', formatter: '.formatter.isSubscribed'}" 
+                                                        tooltip="Subscribe/unsubscribe to updates to the dataset"
+                                                        pressed="{path: '/dataSet/IS_SUBSCRIBED', formatter: '.formatter.trueOrFalse'}"
+                                                        press="toggleSubscription"/>
+                                                    <Button 
+                                                        icon="sap-icon://manager-insight"
+                                                        text="Usage" 
+                                                        tooltip="View Usage Log" 
+                                                        visible="{path: 'USER_MODEL>/admin', formatter: '.formatter.trueOrFalse'}"
+                                                        customData:id="{/dataSet/DATA_SET_ID}" 
+                                                        customData:name="{/dataSet/NAME}" 
+                                                        press="openAuditDialog"/>
+                                                    <Button 
+                                                        icon="sap-icon://edit"
+                                                        text="Edit" 
+                                                        tooltip="Edit Data Card" 
+                                                        visible="{parts:[
+                                                            {path: '/dataSet/dataCard/CREATION_USERID'}, {path: '/dataSet/dataCard/CURRENT_STATE'}, 
+                                                            {path: '/dataSet/dataCard/ACTION_TAKEN'}, {path: 'USER_MODEL>/username'}, 
+                                                            {path: 'USER_MODEL>/admin'}, {path: '/dataSet/dataCard/IS_APPROVED'}
+                                                            ], formatter: '.formatter.rightToEdit'}"
+                                                        press="editDataCard"/>
+                                                </ux:actions>
+                                            </ux:ObjectPageDynamicHeaderTitle>
+                                        </ux:headerTitle>
+                                        <ux:headerContent>
+                                            <FlexBox id="masterMetaFB" wrap="Wrap" alignItems="Stretch">
+                                                <items>
+                                                    <VBox>
+                                                        <items>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Source: " class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{/dataSet/Source}" width="200px" />
+                                                                </items>
+                                                            </HBox>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Classification: " class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{/dataSet/CLASSIFICATION}" />
+                                                                </items>
+                                                            </HBox>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Access Type: " class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{/dataSet/ACCESS_TYPE}" />
+                                                                </items>
+                                                            </HBox>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Load Status: " class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{/dataSet/LOAD_STATUS}" />
+                                                                </items>
+                                                            </HBox>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Load Frequency: " class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{/dataSet/LOAD_FREQUENCY}" />
+                                                                </items>
+                                                            </HBox>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="{i18n>lastModified} :" class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{path: '/dataSet/LAST_MOD_DATE', formatter: '.formatter.modDateTime'}"  />
+                                                                </items>
+                                                            </HBox>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Card Workflow: " class="sapUiSmallMarginEnd" />
+                                                                    <c:MicroProcessFlow id="dataSetWorkFlow" content="{/workflow}">
+                                                                        <c:content>
+                                                                            <c:MicroProcessFlowItem 
+                                                                                icon="{ICON}" 
+                                                                                title="{STATE_NAME}"
+                                                                                press="getProcessStepDetails"
+                                                                                customData:assignedApprover="{ACTION_APPROVER}"
+                                                                                customData:assignedTimestamp="{ASSIGNED_TIMESTAMP}"
+                                                                                customData:actionTaken="{ACTION_TAKEN}"
+                                                                                customData:actionTimestamp="{ACTION_TIMESTAMP}"
+                                                                                customData:actionComments="{ACTION_COMMENTS}"
+                                                                                state="{parts:[{path: 'ACTION_TAKEN'}, {path: 'ASSIGNED_TIMESTAMP'}], formatter: '.formatter.workFlowItemState'}"/>
+                                                                        </c:content>
+                                                                    </c:MicroProcessFlow>
+                                                                </items>
+                                                            </HBox>
+                                                        </items>
+                                                    </VBox>
+                                                    <VBox>
+                                                        <items>
+                                                            <HBox justifyContent="Start">
+                                                                <items>
+                                                                    <Label text="Description: " class="sapUiSmallMarginEnd" />
+                                                                    <Text text="{/dataSet/DESCRIPTION}" width="300px" />
+                                                                </items>
+                                                            </HBox>
+                                                        </items>
+                                                    </VBox>
+                                                    <HBox justifyContent="Start" width="19rem" height="10rem" alignContent="End" alignItems="Start">
+                                                        <items>
+                                                            <Toolbar>
+                                                                <content>
+                                                                    <Label text="File Types" />
+                                                                </content>
+                                                            </Toolbar>
+                                                            <micro:InteractiveDonutChart displayedSegments="6" segments="{/dataSetFileTypes}">
+                                                                <micro:segments>
+                                                                    <micro:InteractiveDonutChartSegment label="{FILE_TYPE}" value="{COUNT}" displayedValue="{PERCENTAGE}"/>
+                                                                </micro:segments>
+                                                            </micro:InteractiveDonutChart>
+                                                        </items>
+                                                    </HBox>
+                                                </items>
+                                            </FlexBox>
+                                        </ux:headerContent>
+                                        <ux:sections>
+                                            <ux:ObjectPageSection title="Files">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <ScrollContainer id="filesScroll" vertical="True">
+                                                                <content>
+                                                                    <Table 
+                                                                        id="filesTable" sticky="HeaderToolbar,ColumnHeaders" inset="false" growing="true"
+                                                                        growingThreshold="100" mode="MultiSelect" width="auto"
+                                                                        items="{
+                                                                                path: '/dataSet/FILES/results/',
+                                                                                sorter: {
+                                                                                    path: 'FILE_TYPE'
+                                                                                }
+                                                                            }">
+                                                                        <headerToolbar>
+                                                                            <Toolbar design="Solid">
+                                                                                <content>
+                                                                                    <Label text="{path: '/dataSet/FILES/total', formatter: '.formatter.filesCount'}"/>
+                                                                                    <ToolbarSpacer />
+                                                                                    <Button icon="sap-icon://download" text="Export File(s)" tooltip="Export selected file(s)" customData:dataSetId="{/dataSet/DATA_SET_ID}" press="downloadFiles"
+                                                                                        enabled="{path: '/dataSet/FILES/total', formatter: '.formatter.greaterThanZero'}"/>
+                                                                                </content>
+                                                                            </Toolbar>
+                                                                        </headerToolbar>
+                                                                        <columns>
+                                                                            <Column minScreenWidth="Desktop" visible="false"><Text text="File ID"/> </Column>
+                                                                            <Column minScreenWidth="1080px" width="100px"><Text text="Exportable"/> </Column>
+                                                                            <Column minScreenWidth="Desktop" width="50%"><Text text="File Name"/> </Column>
+                                                                            <Column minScreenWidth="1080px" width="auto"><Text text="File Type"/> </Column>
+                                                                            <Column minScreenWidth="1080px" width="auto"><Text text="Size"/> </Column>
+                                                                            <Column minScreenWidth="1080px" width="auto"><Text text="Last Updated"/> </Column>
+                                                                        </columns>
+                                                                        <items>
+                                                                            <ColumnListItem type="Navigation" customData:id="{DATA_FILE_ID}" press="showFile"
+                                                                                highlight="{path: 'SEARCH_MATCHES', formatter: '.formatter.searchMatches'}">
+                                                                                <cells>
+                                                                                    <Text text="{DATA_FILE_ID}" />
+                                                                                    <Button type="Transparent" tooltip="Admin Users: click icon to set exportable value" press="setExportable" 
+                                                                                        customData:dataFileId="{DATA_FILE_ID}" customData:exportable="{EXPORTABLE}"
+                                                                                        icon="{path: 'EXPORTABLE', formatter: '.formatter.acceptOrDecline'}" 
+                                                                                        enabled="{path: 'USER_MODEL>/admin', formatter: '.formatter.trueOrFalse'}" />
+                                                                                    <Text text="{DATA_SET_PATH}{FILE_NAME}" wrapping="true"/>
+                                                                                    <Text text="{FILE_TYPE}" />
+                                                                                    <Text text="{FILE_SIZE_MB} MB" />
+                                                                                    <Text text="{path: 'LAST_MOD_DATE', formatter: '.formatter.modDateTime'}"/>
+                                                                                </cells>
+                                                                            </ColumnListItem>
+                                                                        </items>
+                                                                    </Table>
+                                                                </content>
+                                                            </ScrollContainer>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Primary" id="primarySection">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="primaryForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Dataset Name" />
+                                                                    <Text text="{/dataSet/dataCard/DATASET_NAME}" />
+                                                                    <Label text="Classification" />
+                                                                    <Text text="{/dataSet/dataCard/CLASSIFICATION}" />
+                                                                    <Label text="Description" />
+                                                                    <Text text="{/dataSet/dataCard/DATASET_SUMMARY}" />
+                                                                    <Label text="Primary PoC" />
+                                                                    <Text text="{/dataSet/dataCard/PRIMARY_POC_NAME}" />
+                                                                    <Label text="Email" />
+                                                                    <Text text="{/dataSet/dataCard/PRIMARY_POC_EMAIL}" />
+                                                                    <Label text="Phone Number" />
+                                                                    <Text text="{/dataSet/dataCard/PRIMARY_POC_PHONE}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Reference">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="referenceForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Publishers" />
+                                                                    <Text text="{/dataSet/dataCard/PUBLISHER_NAME}" />
+                                                                    <Label text="Industry Type" />
+                                                                    <Text text="{/dataSet/dataCard/INDUSTRY_TYPE}" />
+                                                                    <Label text="Industry Type (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/INDUSTRY_TYPE_OTHER}" />
+                                                                    <Label text="Key Application" />
+                                                                    <Text text="{/dataSet/dataCard/KEY_APPLICATION}" />
+                                                                    <Label text="Key Application (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/KEY_APPLICATION_OTHER}" />
+                                                                    <Label text="Estimated Total Size" />
+                                                                    <Text text="{/dataSet/dataCard/EXTIMATED_SIZE_GB}" />
+                                                                    <Label text="Estimated Total Size (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/ESTIMATED_SIZE_OTHER}" />
+                                                                    <Label text="Intended Use Case(s)" />
+                                                                    <Text text="{/dataSet/dataCard/INTENDED_USE_CASE}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Characteristics">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="charactertisticsForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Primary Data Type" />
+                                                                    <Text text="{/dataSet/dataCard/PRIMARY_DATA_TYPE}" />
+                                                                    <Label text="Primary Data Type (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/PRIMARY_DATA_TYPE_OTHER}" />
+                                                                    <Label text="Dataset Function(s)" />
+                                                                    <Text text="{/dataSet/dataCard/DATASET_FUNCTION}" />
+                                                                    <Label text="Dataset Function (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/DATASET_FUNCTION_OTHER}" />
+                                                                    <Label text="Nature of Content" />
+                                                                    <Text text="{/dataSet/dataCard/CONTENT_NATURE}" />
+                                                                    <Label text="Excluded Data" />
+                                                                    <Text text="{/dataSet/dataCard/EXCLUDED_DATA}" />
+                                                                    <Label text="Privacy PII" />
+                                                                    <Text text="{path: '/dataSet/dataCard/IS_PRIVACY_PII', formatter: '.formatter.yesNoOrNothing'}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="License">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="licenseForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="License Type(s)" />
+                                                                    <Text text="{/dataSet/dataCard/LICENSE_TYPE}" />
+                                                                    <Label text="Last Updated" />
+                                                                    <Text text="{/dataSet/dataCard/LAST_MOD_DATELICENSE_TYPE}" />
+                                                                    <Label text="Version" />
+                                                                    <Text text="{/dataSet/dataCard/LICENSE_VERSION}" />
+                                                                    <Label text="Status" />
+                                                                    <Text text="{/dataSet/dataCard/LICENSE_STATUS}" />
+                                                                    <Label text="Access Cost" />
+                                                                    <Text text="{/dataSet/dataCard/ACCESS_COST}" />
+                                                                    <Label text="License Summary" />
+                                                                    <Text text="{/dataSet/dataCard/LICENSE_SUMMARY}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Collection">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="collectionForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Method(s" />
+                                                                    <Text text="{/dataSet/dataCard/DATA_COLLECTION_METHOD}" />
+                                                                    <Label text="Data Source(s)" />
+                                                                    <Text text="{/dataSet/dataCard/SOURCE_NAME}" />
+                                                                    <Label text="Data Selection" />
+                                                                    <Text text="{/dataSet/dataCard/DATA_SELECTION}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Data Integration">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="integrationForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Cloud" />
+                                                                    <Text text="{/dataSet/dataCard/CLOUD}" />
+                                                                    <Label text="Cloud (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/CLOUD_OTHER}" />
+                                                                    <Label text="Data Card ID" />
+                                                                    <Text text="{/dataSet/dataCard/DATA_INTEGRATOR_CARD_ID}" />
+                                                                    <Label text="Maximum File Size" />
+                                                                    <Text text="{/dataSet/dataCard/MAXIMUM_FILE_SIZE_GB}" />
+                                                                    <Label text="Maximum File Size (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/MAXIMUM_FILE_SIZE_OTHER}" />
+                                                                    <Label text="JCF Data Source (DMZ)" />
+                                                                    <Text text="{/dataSet/dataCard/JCF_DATA_SOURCE_DMZ}" />
+                                                                    <Label text="JCF Data Target (Clean)" />
+                                                                    <Text text="{/dataSet/dataCard/JCF_DATA_TARGET_CLEAN}" />
+                                                                    <Label text="Transformations or Special Requests" />
+                                                                    <Text text="{/dataSet/dataCard/TRANS_SPECIAL_REQUESTS}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Sampling">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="samplingForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Sampling Method(s)" />
+                                                                    <Text text="{/dataSet/dataCard/SAMPLING_METHODS}" />
+                                                                    <Label text="Sampling Method (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/SAMPLING_METHODS_OTHER}" />
+                                                                    <Label text="Filtering Criteria" />
+                                                                    <Text text="{/dataSet/dataCard/FILTERING_CRITERIA}" />
+                                                                    <Label text="Data Distribution" />
+                                                                    <Text text="{/dataSet/dataCard/DATA_DISTRIBUTION}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Labeling">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="labelingForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Labeling Method(s)" />
+                                                                    <Text text="{/dataSet/dataCard/LABELING_METHODS}" />
+                                                                    <Label text="Labeling Method (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/LABELING_METHODS_OTHER}" />
+                                                                    <Label text="Human Types" />
+                                                                    <Text text="{/dataSet/dataCard/LABEL_TYPES_HUMAN}" />
+                                                                    <Label text="Human Sources" />
+                                                                    <Text text="{/dataSet/dataCard/LABEL_SOURCE_HUMAN}" />
+                                                                    <Label text="Human Procedure" />
+                                                                    <Text text="{/dataSet/dataCard/LABEL_PROCEDURE_HUMAN}" />
+                                                                    <Label text="Algorithmic Types" />
+                                                                    <Text text="{/dataSet/dataCard/LABEL_TYPES_ALGORITHM}" />
+                                                                    <Label text="Algorithmic Sources" />
+                                                                    <Text text="{/dataSet/dataCard/LABEL_SOURCE_ALGORITHM}" />
+                                                                    <Label text="Algorithmic Procedure" />
+                                                                    <Text text="{/dataSet/dataCard/LABEL_PROCEDURE_ALGORITHM}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Validation">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="validationForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Method(s)" />
+                                                                    <Text text="{/dataSet/dataCard/VALIDATION_METHOD}" />
+                                                                    <Label text="Method (Other)" />
+                                                                    <Text text="{/dataSet/dataCard/VALIDATION_METHODS_OTHER}" />
+                                                                    <Label text="Validation Task(s)" />
+                                                                    <Text text="{/dataSet/dataCard/VALIDATION_TASKS}" />
+                                                                    <Label text="Validator Description(s)" />
+                                                                    <Text text="{/dataSet/dataCard/VALIDATION_DESCRIPTION}" />
+                                                                    <Label text="Validation Policy Summary" />
+                                                                    <Text text="{/dataSet/dataCard/VALIDATION_POLICY_SUMMARY}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection title="Appendices">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="appendixAForm" layout="ColumnLayout">
+                                                                <form:content>
+                                                                    <Label text="Statutory Authorization" />
+                                                                    <Text text="{/dataSet/dataCard/STATUTORY_AUTHORIZATION}" />
+                                                                    <Label text="Collection Mechanism (Consent)" />
+                                                                    <Text text="{/dataSet/dataCard/COLLECTION_MECHANISM}" />
+                                                                    <Label text="Data Minimization" />
+                                                                    <Text text="{/dataSet/dataCard/DATA_MINIMIZATION}" />
+                                                                    <Label text="Privacy Risk" />
+                                                                    <Text text="{/dataSet/dataCard/PRIVACY_RISK}" />
+                                                                    <Label text="Ethics Risk" />
+                                                                    <Text text="{/dataSet/dataCard/ETHICS_RISK}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                        </ux:sections>
+                                    </ux:ObjectPageLayout> 
+                                </l:content>
+                            </l:BlockLayoutCell>
+                        </l:content>
+                    </l:BlockLayoutRow>
+                </l:content>
+            </l:BlockLayout>
+        </content>
+    </Page>
+</mvc:View>

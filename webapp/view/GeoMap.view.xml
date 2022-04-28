@@ -1,0 +1,148 @@
+<mvc:View 
+    xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns="sap.m" 
+    xmlns:l="sap.ui.layout"
+    xmlns:vbm="sap.ui.vbm"
+    xmlns:html="http://www.w3.org/1999/xhtml" 
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:vk="sap.ui.vk"
+    width="100%" 
+    height="700px"
+    displayBlock="true"
+    controllerName="marina.controller.GeoMap">
+    <vk:MapContainer 
+        showZoom="false"
+        showSettings="false"
+        autoAdjustHeight="true">
+        <vk:listPanelStack>
+            <vk:ListPanelStack width="250px">
+                <vk:content>
+                    <vk:ListPanel selectionMode="SingleSelectMaster" expanded="false" selectionChange="onSelectionChange">
+                        <vk:items>
+                            <vk:LegendItem title="Search" icon="sap-icon://search" />
+                            <vk:LegendItem title="Hazard" icon="sap-icon://warning2" />
+                            <vk:LegendItem title="Way points" icon="sap-icon://map-3" />
+                        </vk:items>
+                    </vk:ListPanel>
+                </vk:content>
+            </vk:ListPanelStack>
+        </vk:listPanelStack>
+        <vk:content>
+            <vk:ContainerContent 
+                id="geoMapA_Container"
+                title="Base map"
+                icon="sap-icon://map-2">
+                <vk:content>
+                    <vbm:GeoMap 
+                        id="geoMapA"
+                        click="onMapClick"
+                        contextMenu="onMapSearch"
+                        centerChanged="onMapChange"
+                        zoomChanged="onMapChange">
+                        <vbm:vos>
+                            <vbm:Circles 
+                                id="geoMapCirclesA"
+                                items="{/Circles}"
+                                contextMenu="onContextMenuItem">
+                                <vbm:items>
+                                    <vbm:Circle
+                                        key="{key}" 
+                                        position="{lon};{lat};0;" 
+                                        tooltip="{title}" 
+                                        radius="{radius}" 
+                                        colorBorder="rgb(255,255,255)"
+                                        color="{color}"
+                                        click="onClickCircle"
+                                        contextMenu="onContextMenuCircle" />
+                                </vbm:items>
+                            </vbm:Circles>
+                            <vbm:Spots
+                                id="geoMapSpotsA" 
+                                posChangeable="true"
+                                scaleChangeable="false"
+                                contextMenu="onContextMenuItem"
+                                items="{/Spots}">
+                                <vbm:items>
+                                    <vbm:Spot 
+                                        key="{key}"
+                                        position="{pos}" 
+                                        tooltip="{tooltip}"
+                                        text="{text}" 
+                                        click="onClickSpot" contextMenu="onContextMenuSpot">
+                                    </vbm:Spot>
+                                </vbm:items>
+                            </vbm:Spots>
+                            <vbm:Containers
+                                id="geoMapContainersA">
+                            </vbm:Containers>
+                            <vbm:Areas
+                                id="geoMapAreasA"
+                                items="{/Areas}">
+                                <vbm:items>
+                                    <vbm:Area
+                                        key="{key}"
+                                        position="{pos}"/>
+                                </vbm:items>
+                            </vbm:Areas>
+                            <vbm:Areas id="geoSearchShapesA"/>
+                            <vbm:Areas id="geoHazardShapesA"/>
+                            <vbm:Spots id="geoWayPointsA"/>
+                            <vbm:Routes id="geoRoutesA"/>
+                        </vbm:vos>
+                    </vbm:GeoMap>
+                </vk:content>
+            </vk:ContainerContent>
+            <vk:ContainerContent
+                id="geoMapB_Container" 
+                title="Aerial map"
+                icon="sap-icon://choropleth-chart">
+                <vk:content>
+                    <vbm:GeoMap 
+                        id="geoMapB"
+                        click="onMapClick"
+                        centerChanged="onMapChange"
+                        zoomChanged="onMapChange">
+                        <vbm:vos>
+                            <vbm:Circles 
+                                id="geoMapCirclesB"
+                                items="{/Circles}"
+                                contextMenu="onContextMenuItem">
+                                <vbm:items>
+                                    <vbm:Circle
+                                        key="{key}" 
+                                        position="{lon};{lat};0;" 
+                                        tooltip="{title}" 
+                                        radius="{radius}" 
+                                        colorBorder="rgb(255,255,255)"
+                                        color="{color}"
+                                        click="onClickCircle"
+                                        contextMenu="onContextMenuCircle" />
+                                </vbm:items>
+                            </vbm:Circles>
+                            <vbm:Spots
+                                id="geoMapSpotsB"  
+                                posChangeable="true"
+                                scaleChangeable="false"
+                                contextMenu="onContextMenuItem"
+                                items="{/Spots}">
+                                <vbm:items>
+                                    <vbm:Spot 
+                                        key="{key}"
+                                        position="{pos}" 
+                                        tooltip="{tooltip}"
+                                        text="{text}" 
+                                        click="onClickSpot" contextMenu="onContextMenuSpot">
+                                    </vbm:Spot>
+                                </vbm:items>
+                            </vbm:Spots>
+                            <vbm:Containers
+                                id="geoMapContainersB">
+                            </vbm:Containers>
+                        </vbm:vos>
+                    </vbm:GeoMap>
+                </vk:content>
+            </vk:ContainerContent>
+        </vk:content>
+    </vk:MapContainer>
+</mvc:View>

@@ -1,0 +1,352 @@
+<mvc:View
+    controllerName="marina.controller.ImageryPackageMaster"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:mc="sap.suite.ui.microchart"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:grid="sap.ui.layout.cssgrid"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:f="sap.f"
+    xmlns:l="sap.ui.layout"
+    xmlns:ux="sap.uxap"
+    xmlns="sap.m">
+    <Page
+        showHeader="true" 
+        title="Imagery Package Details"
+        showNavButton="true"
+        enableScrolling="true"
+        navButtonPress="navBack">
+        <content>
+            <l:BlockLayout
+                background="Dashboard">
+                <l:content>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell>
+                                <l:content>
+                                    <ux:ObjectPageLayout id="imageryOpl"
+                                        enableLazyLoading="true"
+                                        useIconTabBar="true"
+                                        showTitleInHeaderContent="true"
+                                        showHeaderContent="true"
+                                        navigate="loadVideoMap">
+                                        <ux:headerTitle>
+                                            <ux:ObjectPageDynamicHeaderTitle>
+                                                <ux:expandedHeading>
+                                                    <FlexBox alignItems="Center" fitContainer="True">
+                                                        <items>
+                                                            <core:Icon class="sapUiSmallMarginEnd"
+                                                                size="25px"
+                                                                src="{path: '/imageryPackage/metadata/IMAGERY_PACKAGE_NAME', formatter: '.formatter.getImagePackageTypeIcon'}"
+                                                            />
+                                                            <Title text="{/imageryPackage/metadata/IMAGERY_PACKAGE_NAME}" />
+                                                        </items>
+                                                    </FlexBox>
+                                                </ux:expandedHeading>
+                                                <ux:snappedHeading>
+                                                    <FlexBox alignItems="Center" fitContainer="True">
+                                                        <items>
+                                                            <core:Icon class="sapUiSmallMarginEnd"
+                                                                size="25px"
+                                                                color="#32363a"
+                                                                src="sap-icon://image-viewer"
+                                                            />
+                                                            <Title text="{/imageryPackage/metadata/IMAGERY_PACKAGE_NAME}" />
+                                                        </items>
+                                                    </FlexBox>
+                                                </ux:snappedHeading>
+                                                <ux:actions>
+                                                    <Button 
+                                                        text="Export"
+                                                        icon="sap-icon://download"
+                                                        tooltip="Export Imagery Package"/>
+                                                    <Button 
+                                                        text="Usage"
+                                                        icon="sap-icon://manager-insight"
+                                                        tooltip="View Usage Log"
+                                                        press="openAuditDialog"
+                                                        visible="{path: 'USER_MODEL>/admin', formatter: '.formatter.isAdmin'}"
+                                                        customData:id="{/imageryPackage/metadata/IMAGERY_PACKAGE_UUID}"
+                                                        customData:name="{/imageryPackage/metadata/IMAGERY_PACKAGE_NAME}"/>
+                                                </ux:actions>
+                                            </ux:ObjectPageDynamicHeaderTitle>
+                                        </ux:headerTitle>
+                                        <ux:headerContent>
+                                            <FlexBox id="imageryHeader" class="sapUiMediumMarginBottom masterMetaBox"
+                                                wrap="Wrap"
+                                                alignItems="Stretch"
+                                                justifyContent="SpaceBetween">
+                                                <items>
+                                                    <HBox
+                                                        wrap="Wrap">
+                                                        <items>
+                                                            <VBox class="headerContentSection">
+                                                                <items>
+                                                                    <HBox class="sapUiTinyMarginBottom"
+                                                                        alignItems="Center"
+                                                                        justifyContent="Start">
+                                                                        <items>
+                                                                            <Label text="Classification" class="sapUiSmallMarginEnd imageryLabel" />
+                                                                            <Text text="{/imageryPackage/metadata/CLASSIFICATION}" />
+                                                                        </items>
+                                                                    </HBox>
+                                                                    <HBox class="sapUiTinyMarginBottom"
+                                                                        alignItems="Center"
+                                                                        justifyContent="Start">
+                                                                        <items>
+                                                                            <Label text="Imagery Type: " class="sapUiSmallMarginEnd imageryLabel" />
+                                                                            <Text text="{/imageryPackage/metadata/IMAGERY_PACKAGE_TYPE}" />
+                                                                        </items>
+                                                                    </HBox>
+                                                                    <HBox class="sapUiTinyMarginBottom"
+                                                                        alignItems="Center"
+                                                                        justifyContent="Start">
+                                                                        <items>
+                                                                            <Label text="TE Designation: " class="sapUiSmallMarginEnd imageryLabel" />
+                                                                            <HBox
+                                                                                alignItems="Center">
+                                                                                <items>
+                                                                                    <core:Icon class="sapUiTinyMarginEnd"
+                                                                                        color="#427cac"
+                                                                                        src="{path: '/imageryPackage/metadata/TE_DESIGNATION', formatter: '.formatter.getImageryIcon'}"/>
+                                                                                </items>
+                                                                            </HBox>
+                                                                            <Text text="{/imageryPackage/metadata/TE_DESIGNATION}" />
+                                                                        </items>
+                                                                    </HBox>
+                                                                </items>
+                                                            </VBox>
+                                                            <VBox class="headerContentSection">
+                                                                <items>
+                                                                    <HBox
+                                                                        justifyContent="Start">
+                                                                        <items>
+                                                                            <Label text="Description: " class="sapUiSmallMarginEnd imageryLabel" />
+                                                                            <Text text="{/imageryPackage/metadata/IMAGERY_PACKAGE_DESCRIPTION}" width="300px"/>
+                                                                        </items>
+                                                                    </HBox>
+                                                                </items>
+                                                            </VBox>
+                                                        </items>
+                                                    </HBox>
+                                                    <VBox class="headerContentSection"
+                                                        width="25rem"
+                                                        height="12rem"
+                                                        alignContent="Start"
+                                                        alignItems="End"
+                                                        justifyContent="Start"
+                                                        visible="{path: '/imageryPackage/annotationStats', formatter: '.formatter.isAnnotationStatsMoreThanZero'}">
+                                                        <items>
+                                                            <Toolbar>
+                                                                <content>
+                                                                    <Label text="Video Clips and Frames" />
+                                                                </content>
+                                                            </Toolbar>
+                                                            <mc:InteractiveBarChart>
+                                                                <mc:bars>
+                                                                    <mc:InteractiveBarChartBar 
+                                                                        label="Clips"
+                                                                        value="{/imageryPackage/metadata/CLIP_COUNT}" />
+                                                                    <mc:InteractiveBarChartBar 
+                                                                        label="Frames"
+                                                                        value="{/imageryPackage/metadata/FRAME_COUNT}" />
+                                                                </mc:bars>
+                                                            </mc:InteractiveBarChart>
+                                                        </items>
+                                                    </VBox>
+                                                </items>
+                                            </FlexBox>
+                                        </ux:headerContent>
+                                        <ux:sections>
+                                            <ux:ObjectPageSection id="clipsSection" title="Clips">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <f:GridList id="clipsGrid" 
+                                                                mode="SingleSelectMaster"
+                                                                items="{/results/results}"
+                                                                itemPress="showClip"
+                                                                sticky="HeaderToolbar,InfoToolbar">
+                                                                <f:customLayout>
+                                                                    <grid:GridBoxLayout boxMinWidth="20rem"/>
+                                                                </f:customLayout>
+                                                                <f:infoToolbar>
+                                                                    <OverflowToolbar
+                                                                        design="Solid"
+                                                                        style="Standard">
+                                                                        <content>
+                                                                            <Label text="{/results/total} total" class="resultsHeaderTotal" />
+                                                                            <ToolbarSpacer />
+                                                                            <core:Fragment fragmentName="marina.view.fragment.ResultsPager" type="XML" />
+                                                                        </content>
+                                                                    </OverflowToolbar>
+                                                                </f:infoToolbar>
+                                                                <f:items>
+                                                                    <f:GridListItem class="sapUiTinyMargin"
+                                                                        type="Active"
+                                                                        customData:id="{SEQUENCE_CLIP_UUID}">
+                                                                        <f:content>
+                                                                            <VBox justifyContent="SpaceBetween" class="sapUiTinyMargin" >
+                                                                                <layoutData>
+                                                                                    <FlexItemData growFactor="1" shrinkFactor="0"/>
+                                                                                </layoutData>
+                                                                                <items>
+                                                                                    <VBox alignContent="Center" alignItems="Center" class="resultBox" >
+                                                                                        <items> 
+                                                                                            <Label text="{CLASSIFICATION}" class="resultBoxClassification" />
+                                                                                                <VBox width="100%" alignContent="Center" alignItems="Center">
+                                                                                                    <items>
+                                                                                                        <Image 
+                                                                                                            width="auto" height="175px" class="resultImage"
+                                                                                                            src="{FIRST_FRAME_FILEPATH}"/>
+                                                                                                    </items>
+                                                                                                </VBox>
+                                                                                            <Label text="{CLASSIFICATION}" class="resultBoxClassification" />
+                                                                                        </items>                 
+                                                                                    </VBox>
+                                                                                    <OverflowToolbar design="Solid" class="sapContrast">
+                                                                                        <content>
+                                                                                            <Label text="{path: 'START_TIMESTAMP', formatter: '.formatter.modDateTimeStamp'}" />
+                                                                                            <ToolbarSpacer />
+                                                                                            <Button 
+                                                                                                type="Transparent"
+                                                                                                icon="sap-icon://message-information"
+                                                                                                tooltip="View Additional Information"
+                                                                                                customData:id="{SEQUENCE_CLIP_UUID}"
+                                                                                                press="openClipInfo"/>
+                                                                                        </content>
+                                                                                    </OverflowToolbar>
+                                                                                </items>
+                                                                            </VBox>
+                                                                        </f:content>
+                                                                    </f:GridListItem>
+                                                                </f:items>
+                                                            </f:GridList>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection id="videoSection" title="Video">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <HBox>
+                                                                <items>
+                                                                    <form:SimpleForm id="videoForm" layout="ColumnLayout" class="sapUiNoContentPadding">
+                                                                        <form:content>
+                                                                            <Label text="Origin ID" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/ORIGIN_ID}" />
+                                                                            <Label text="Size" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/VIDEO_SIZE_BYTES} bytes" />
+                                                                            <Label text="Bit Rate" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/BIT_RATE}" />
+                                                                            <Label text="Bits Per Raw Sample" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/BITS_PER_RAW_SAMPLE}" />
+                                                                            <Label text="CODEC" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/CODEC_NAME}" />
+                                                                            <Label text="Derivation Type" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/DERIVATION_TYPE}" />
+                                                                            <Label text="Source Record Key" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/SRC_RECORD_KEY}" />
+                                                                            <Label text="Format" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/FORMAT_NAME}" />
+                                                                            <Label text="Duration" class="formLabel" />
+                                                                            <Text text="{path: '/imageryPackage/videoMetadata/DURATION_SECONDS', formatter: '.formatter.secsToMins'}" />
+                                                                            <Label text="FPS" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/FPS}" />
+                                                                            <Label text="Height" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/HEIGHT}" />
+                                                                            <Label text="Width" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/WIDTH}" />
+                                                                            <Label text="# Frames" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/FRAME_COUNT}" />
+                                                                            <Label text="# Streams" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/STREAM_COUNT}" />
+                                                                            <Label text="KLV Name" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/KLV_NAME}" />
+                                                                            <Label text="Pixel Format" class="formLabel" />
+                                                                            <Text text="{/imageryPackage/videoMetadata/PIX_FMT}" />
+                                                                        </form:content>
+                                                                    </form:SimpleForm>
+                                                                    <VBox width="100%" fitContainer="true">
+                                                                        <items>
+                                                                            <Toolbar class="sapUiTinyMarginBottom">
+                                                                                <content>
+                                                                                    <core:Icon class="sapUiTinyMarginEnd" src="sap-icon://map-2" color="#0854a0"/>
+                                                                                    <Title text="Location" class="imageryPackageHeader" />
+                                                                                </content>
+                                                                            </Toolbar>
+                                                                            <VBox height="30vh" fitContainer="true" id="videoMapBox" />
+                                                                        </items>
+                                                                    </VBox>
+                                                                </items>
+                                                            </HBox>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection id="sensorSection" title="Sensor">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                            <form:SimpleForm id="sensorForm" layout="ColumnLayout" class="sapUiNoContentPadding">
+                                                                <form:content>
+                                                                    <Label text="Source Sensor" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/IMAGE_SOURCE_SENSOR}" />
+                                                                    <Label text="Tail Number" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/TAIL_NUMBER}" />
+                                                                    <Label text="Platform" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/PLATFORM_TYPE}" />
+                                                                    <Label text="Min Sensor True Altitude" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_SENSOR_TRUE_ALTITUDE}" />
+                                                                    <Label text="Max Sensor True Altitude" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_SENSOR_TRUE_ALTITUDE}" />
+                                                                    <Label text="Min Sensor Relative Pitch Angle" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_SENSOR_RELATIVE_PITCH_ANGLE}" />
+                                                                    <Label text="Max Sensor Relative Pitch Angle" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_SENSOR_RELATIVE_PITCH_ANGLE}" />
+                                                                    <Label text="Min Sensor Relative Roll Angle" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_SENSOR_RELATIVE_ROLL_ANGLE}" />
+                                                                    <Label text="Max Sensor Relative Roll Angle" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_SENSOR_RELATIVE_ROLL_ANGLE}" />
+                                                                    <Label text="Min Platform Ground Speed" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_PLATFORM_GROUND_SPEED}" />
+                                                                    <Label text="Max Platform Ground Speed" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_PLATFORM_GROUND_SPEED}" />
+                                                                    <Label text="Min Platform HeadingMin Platform Heading" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_PLATFORM_HEADING}" />
+                                                                    <Label text="Max Platform Heading" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_PLATFORM_HEADING}" />
+                                                                    <Label text="Min Platform True Airspeed" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_PLATFORM_TRUE_AIRSPEED}" />
+                                                                    <Label text="Max Platform True Airspeed" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_PLATFORM_TRUE_AIRSPEED}" />
+                                                                    <Label text="Min Platform Pitch Angle" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MIN_PLATFORM_PITCH_ANGLE}" />
+                                                                    <Label text="Max Platform Pitch Angle" class="formLabel" />
+                                                                    <Text text="{/imageryPackage/sensorMetadata/MAX_PLATFORM_PITCH_ANGLE}" />
+                                                                </form:content>
+                                                            </form:SimpleForm>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                            <ux:ObjectPageSection id="annotationsSection" title="Annotations">
+                                                <ux:subSections>
+                                                    <ux:ObjectPageSubSection>
+                                                        <ux:blocks>
+                                                        </ux:blocks>
+                                                    </ux:ObjectPageSubSection>
+                                                </ux:subSections>
+                                            </ux:ObjectPageSection>
+                                        </ux:sections>
+                                    </ux:ObjectPageLayout>
+                                </l:content>
+                            </l:BlockLayoutCell> 
+                        </l:content>
+                    </l:BlockLayoutRow>
+                </l:content>
+            </l:BlockLayout>
+        </content>
+    </Page>
+</mvc:View>

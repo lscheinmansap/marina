@@ -1,0 +1,13 @@
+<mvc:View
+    controllerName="marina.controller.DataSet"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.f">
+    <FlexibleColumnLayout id="fcl" backgroundDesign="Translucent" stateChange="onStateChange">
+        <beginColumnPages>
+            <mvc:XMLView viewName="marina.view.DataSetMaster" />
+        </beginColumnPages>
+        <midColumnPages>
+            <mvc:XMLView viewName="marina.view.DataSetDetail" />
+        </midColumnPages>
+    </FlexibleColumnLayout>
+</mvc:View>

@@ -1,0 +1,18 @@
+---
+applications:
+- name: marina-api
+  path: ./
+  memory: 256M
+  disk_quota: 1024M
+  command: node marinaApi/test/testserver.js
+  instances: 1
+  buildpack: nodejs_buildpack
+  random-route: false
+- name: sap-marina
+  path: ./
+  memory: 256M
+  disk_quota: 1024M
+  command: npm run start_cf
+  instances: 1
+  random-route: false
+  buildpack: nodejs_buildpack

@@ -1,0 +1,525 @@
+<mvc:View class="sapUiSizeCompact"
+    controllerName="marina.controller.DataCardEditable"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.uxap"
+    xmlns="sap.m">
+    <Page title="Data Card"
+        class="sapUiSizeCompact"
+        showNavButton="true" 
+        enableScrolling="true"
+        showHeader="true" 
+        navButtonPress="navBack">
+        <content>
+            <l:BlockLayout background="Dashboard" class="mgmtBlockLayout">
+                <l:layoutData>
+                    <FlexItemData minWidth="100%" maxWidth="100%" />
+                </l:layoutData>
+                <l:content>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell>
+                                <l:content>
+                                    <u:ObjectPageLayout id="editDataCardOpl"
+                                        enableLazyLoading="true" 
+                                        useIconTabBar="true" 
+                                        showTitleInHeaderContent="false"
+                                        showHeaderContent="{path: '/dataCard/ACTION_TAKEN', formatter: '.formatter.isActionTaken'}">
+                                        <u:headerTitle>
+                                            <u:ObjectPageDynamicHeaderTitle>
+                                                <u:expandedHeading>
+                                                    <FlexBox alignItems="Center" fitContainer="true">
+                                                        <items>
+                                                            <core:Icon src="sap-icon://form" size="25px" class="sapUiSmallMarginEnd" />
+                                                            <Title text="{path: '/dataCard/DATA_SET/NAME', formatter: '.formatter.isNewDataCard'}"/>
+                                                        </items>
+                                                    </FlexBox>
+                                                </u:expandedHeading>
+                                                <u:snappedHeading>
+                                                    <FlexBox alignItems="Center" fitContainer="true">
+                                                        <items>
+                                                            <core:Icon src="sap-icon://form" size="25px" color="#32363a" class="sapUiSmallMarginEnd" />
+                                                            <Title text="{path: '/dataCard/DATASET_NAME', formatter: '.formatter.isNewDataCard'}" />
+                                                        </items>
+                                                    </FlexBox>
+                                                </u:snappedHeading>
+                                                <u:actions>
+                                                    <Button text="Save"
+                                                        press="saveDataCard" 
+                                                        tooltip="Save Data Card" 
+                                                        visible="{parts:[ {path: 'USER_MODEL>/admin'}, {path: '/dataCard/CURRENT_STATE'}, 
+                                                                {path: '/dataCard/CREATION_USERID'}, {path: 'USER_MODEL>/username'}],
+                                                                formatter: '.formatter.isAbleToSaveOrDeleteDataCard'}" />
+                                                    <Button text="Errors ({= ${message>/}.length})"
+                                                        id="data-messagePopover"
+                                                        press="openMessages"
+                                                        icon="sap-icon://message-popup" 
+                                                        visible="{parts:[ {path: '/dataCard/CURRENT_STATE'}, {path: '/dataCard/CREATION_USERID'}, 
+                                                                {path: 'USER_MODEL>/username'}],
+                                                                formatter: '.formatter.isDataCardWithErrors'}"  
+                                                    />
+                                                    <Button text="Delete"
+                                                        press="deleteDataCard" 
+                                                        icon="sap-icon://delete" 
+                                                        tooltip="Delete Data Card" 
+                                                        visible="{parts:[ {path: 'USER_MODEL>/admin'}, {path: '/dataCard/CURRENT_STATE'}, 
+                                                                {path: '/dataCard/CREATION_USERID'}, {path: 'USER_MODEL>/username'}],
+                                                                formatter: '.formatter.isAbleToSaveOrDeleteDataCard'}"
+                                                        enabled="{path: '/dataCard/DATA_CARD_ID', formatter: '.formatter.isValidDataCard'}" 
+                                                    />
+                                                    <Button text="Submit"
+                                                        press="openSubmitDialog" 
+                                                        icon="sap-icon://paper-plane" 
+                                                        tooltip="Submit Data Card for Approval" 
+                                                        visible="{parts:[ {path: '/dataCard/IS_APPROVED'}, {path: '/dataCard/CURRENT_STATE'}, 
+                                                                {path: '/dataCard/CREATION_USERID'}, {path: 'USER_MODEL>/username'}], 
+                                                                formatter: '.formatter.canSubmit'}"
+                                                        enabled="{path: '/dataCard/DATA_CARD_ID', formatter: '.formatter.isValidDataCard'}" 
+                                                    />
+                                                    <Button text="Approve" 
+                                                        press="openApproveDialog"
+                                                        icon="sap-icon://accept"
+                                                        tooltip="Approve Data Card" 
+                                                        type="Accept" 
+                                                        visible="{parts:[ {path: 'USER_MODEL>/approver'}, {path: '/dataCard/CURRENT_STATE'}], 
+                                                            formatter: '.formatter.isApprover'}" 
+                                                    />
+                                                    <Button text="Reject" 
+                                                        press="openRejectDialog" 
+                                                        icon="sap-icon://decline"
+                                                        tooltip="Reject Data Card" 
+                                                        type="Reject"
+                                                        visible="{parts:[ {path: 'USER_MODEL>/approver'}, {path: '/dataCard/CURRENT_STATE'}], 
+                                                            formatter: '.formatter.isApprover'}" 
+                                                    />
+                                                </u:actions>
+                                            </u:ObjectPageDynamicHeaderTitle>
+                                        </u:headerTitle>
+                                        <u:headerContent>
+                                            <FlexBox height="165px" justifyContent="Center" alignContent="Center" alignItems="Center">
+                                                <items>
+                                                    <core:Fragment fragmentName="marina.view.fragment.CardWorkflow" type="XML" />
+                                                </items>
+                                            </FlexBox>
+                                        </u:headerContent>
+                                        <u:sections>
+                                            <u:ObjectPageSection>
+                                                <u:subSections>
+                                                    <u:ObjectPageSubSection title="Primary">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="primaryForm" layout="ColumnLayout" editable="true">
+                                                                <f:content>
+                                                                    <Label text="Data Card ID" visible="false" />
+                                                                    <Input value="{DATA_CARD_ID}" visible="false"/>
+                                                                    <Label text="WF ID" visible="false" />
+                                                                    <Input value="{WF_ID}" visible="false" />
+                                                                    <Label text="Data Preview Table" visible="false" />
+                                                                    <Input value="{DATA_PREVIEW_TABLE}" visible="false" />
+                                                                    <Label text="Is Approved" visible="false" />
+                                                                    <Input value="{IS_APPROVED}" visible="false" />
+                                                                    <Label text="Created By" visible="false" />
+                                                                    <Input value="{CREATION_USERID}" visible="false" />
+                                                                    <Label text="Created Timestamp" visible="false" />
+                                                                    <Input value="{CREATION_TIMESTAMP}" visible="false" />
+                                                                    <Label text="Dataset" />
+                                                                    <Input 
+                                                                        id="datasetNameInput" 
+                                                                        value="{DATA_SET/NAME}" 
+                                                                        placeholder="Select data set associated with card."
+                                                                        required="true" 
+                                                                        showValueHelp="true" 
+                                                                        valueHelpOnly="true" 
+                                                                        valueHelpRequest="showUnlinkedDataSets" />
+                                                                    <Label text="Dataset Classification" required="true" />
+                                                                    <ComboBox id="data-classification" 
+                                                                        items="{
+                                                                                path: '/classifications',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKey="{DATA_SET/CLASSIFICATION}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </ComboBox>
+                                                                    <Label text="Description" />
+                                                                    <TextArea 
+                                                                        id="data-datasetSummary" 
+                                                                        value="{
+                                                                            path: 'DATASET_SUMMARY',
+                                                                            type: 'sap.ui.model.type.String',
+                                                                            constraints: {
+                                                                                minLength: 1,
+                                                                                maxLength: 5000
+                                                                            }
+                                                                        }"
+                                                                        height="100px"
+                                                                        placeholder="Describe the dataset"
+                                                                        required="false"
+                                                                    />
+                                                                    <Label text="Primary PoC" />
+                                                                    <Input
+                                                                        id="data-pocName"
+                                                                        value="{
+                                                                            path: 'PRIMARY_POC_NAME',
+                                                                            type: 'sap.ui.model.type.String',
+                                                                            constraints: {
+                                                                                minLength: 1,
+                                                                                maxLength: 100
+                                                                            }
+                                                                        }"
+                                                                        placeholder="Point of contact name"
+                                                                        required="false"
+                                                                    />
+                                                                    <Label text="Email" />
+                                                                    <Input
+                                                                        id="data-pocEmail"
+                                                                        value="{
+                                                                            path: 'PRIMARY_POC_EMAIL',
+                                                                            type: 'sap.ui.model.type.String',
+                                                                            constraints: {
+                                                                                minLength: 1,
+                                                                                maxLength: 100
+                                                                            }
+                                                                        }"
+                                                                        placeholder="Point of contact email address"
+                                                                        required="false"
+                                                                    />
+                                                                    <Label text="Phone Number" />
+                                                                    <Input
+                                                                        id="data-pocPhone"
+                                                                        value="{
+                                                                            path: 'PRIMARY_POC_PHONE',
+                                                                            type: 'sap.ui.model.type.String',
+                                                                            constraints: {
+                                                                                minLength: 1,
+                                                                                maxLength: 100
+                                                                            }
+                                                                        }"
+                                                                        placeholder="Point of contact phone number"
+                                                                        required="false"
+                                                                    />
+                                                                </f:content>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Reference">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="refForm" layout="ColumnLayout" editable="true">
+                                                                <f:content>
+                                                                    <Label text="Publishers" />
+                                                                    <Input value="{PUBLISHER_NAME}" placeholder="Comma separated list of publisher names" maxLength="500"/>
+                                                                    <Label text="Industry Type" />
+                                                                    <ComboBox
+                                                                        items="{
+                                                                                path: '/industryTypes',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKey="{INDUSTRY_TYPE}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </ComboBox>
+                                                                    <Input value="{INDUSTRY_TYPE_OTHER}" placeholder="'Other' industry type." maxLength="100"/>
+                                                                    <Label text="Key Application" />
+                                                                    <ComboBox
+                                                                        items="{
+                                                                                path: '/keyApps',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKey="{KEY_APPLICATION}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </ComboBox>
+                                                                    <Input value="{KEY_APPLICATION_OTHER}" placeholder="'Other' key application." maxLength="200"/>
+                                                                    <Label text="Estimated Total Size" />
+                                                                    <ComboBox
+                                                                        items="{
+                                                                                path: '/estSizes',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKey="{EXTIMATED_SIZE_GB}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </ComboBox>
+                                                                    <Input value="{ESTIMATED_SIZE_OTHER}" placeholder="'Other' estimated size." maxLength="100"/>
+                                                                    <Label text="Intended Use Case(s)" />
+                                                                    <TextArea value="{INTENDED_USE_CASE}" height="100px" placeholder="Intended use case(s) of the dataset" maxLength="512" />
+                                                                </f:content>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Characteristics">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="charsForm" layout="ColumnLayout" editable="true">
+                                                                <f:content>
+                                                                    <Label text="Primary Data Type" />
+                                                                    <ComboBox
+                                                                        items="{
+                                                                                path: '/primaryDataTypes',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKey="{PRIMARY_DATA_TYPE}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </ComboBox>
+                                                                    <Input value="{PRIMARY_DATA_TYPE_OTHER}" placeholder="'Other' primary data type." maxLength="100"/>
+                                                                    <Label text="Dataset Function(s)" />
+                                                                    <MultiComboBox
+                                                                        items="{
+                                                                                path: '/datasetFunctions',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKeys="{DATASET_FUNCTION}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </MultiComboBox>
+                                                                    <Input value="{DATASET_FUNCTION_OTHER}" placeholder="'Other' key dataset functions." maxLength="100"/>
+                                                                    <Label text="Nature of Content" />
+                                                                    <TextArea value="{CONTENT_NATURE}" height="100px" placeholder="Nature of Content" maxLength="5000"/>
+                                                                    <Label text="Excluded Data" />
+                                                                    <TextArea value="{EXCLUDED_DATA}" height="100px" placeholder="Excluded data" maxLength="100"/>
+                                                                    <Label text="Privacy PII" />
+                                                                    <ComboBox
+                                                                        items="{
+                                                                                path: '/isPrivacyPii',
+                                                                                sorter: { path: 'VALUE' }
+                                                                            }"
+                                                                        selectedKey="{IS_PRIVACY_PII}">
+                                                                        <core:Item key="{KEY}" text="{VALUE}" />
+                                                                    </ComboBox>
+                                                                    <TextArea value="{PRIVACY_PII}" height="100px" placeholder="If Privacy PII, enter explaination." maxLength="5000" />
+                                                                    <Label text="Total Instances" />
+                                                                    <Input value="{DATASET_METADATA_TOTAL_INSTANCES}" width="150px" maxLength="10"/>
+                                                                    <Label text="Total Classes" />
+                                                                    <Input value="{DATASET_METADATA_TOTAL_CLASSES}" width="150px" maxLength="10"/>
+                                                                    <Label text="Total Labels" />
+                                                                    <Input value="{DATASET_METADATA_TOTAL_LABELS}" width="150px" maxLength="10"/>
+                                                                    <Label text="Algorithmatically Generated" />
+                                                                    <Input value="{DATASET_METADATA_ALGORITM_GEN}" width="150px" maxLength="10"/>
+                                                                    <Label text="User Contributed" />
+                                                                    <Input value="{DATASET_METADATA_USER_CONTRIBUTED}" width="150px" maxLength="10"/>
+                                                                    <Label text="Human Verified Labels" />
+                                                                    <Input value="{DATASET_METADATA_HUMAN_VERIFIED_LABEL}" width="150px" maxLength="10"/>
+                                                                </f:content>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="License">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="licenseForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="License Type(s)" />
+                                                                <Input value="{LICENSE_TYPE}" width="150px" placeholder="Comma separated list of license types" maxLength="500"/>
+                                                                <Label text="Last Updated" />
+                                                                <DatePicker value="{LAST_MOD_DATELICENSE_TYPE}" displayFormat="yyyy/MM/dd" valueFormat="yyyy/MM/dd"/>
+                                                                <Label text="Version" />
+                                                                <Input value="{LICENSE_VERSION}" placeholder="" maxLength="30"/>
+                                                                <Label text="Status" />
+                                                                <Input value="{LICENSE_STATUS}" placeholder="" maxLength="30"/>
+                                                                <Label text="Access Cost" />
+                                                                <Input value="{ACCESS_COST}" placeholder="" maxLength="200"/>
+                                                                <Label text="License Summary" />
+                                                                <TextArea value="{LICENSE_SUMMARY}" placeholder="Summary of license" maxLength="5000" height="100px"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Collection">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="collectionForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="Method(s)" />
+                                                                <TextArea value="{DATA_COLLECTION_METHOD}" maxLength="500" height="100px"/>
+                                                                <Label text="Data Source(s)" />
+                                                                <TextArea value="{SOURCE_NAME}" placeholder="" maxLength="500" height="100px"/>
+                                                                <Label text="Data Selection" />
+                                                                <TextArea value="{DATA_SELECTION}" placeholder="" maxLength="512" height="100px"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Data Integration">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="integrationForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="Cloud" />
+                                                                <ComboBox
+                                                                    items="{
+                                                                            path: '/clouds',
+                                                                            sorter: { path: 'VALUE' }
+                                                                        }"
+                                                                    selectedKey="{CLOUD}">
+                                                                    <core:Item key="{KEY}" text="{VALUE}" />
+                                                                </ComboBox>
+                                                                <Input value="{CLOUD_OTHER}" placeholder="'Other' cloud" maxLength="100"/>
+                                                                <Label text="Data Card ID" />
+                                                                <Input value="{DATA_INTEGRATOR_CARD_ID}" placeholder="Data Card UUID" maxLength="100"/>
+                                                                <Label text="Maximum File Size" />
+                                                                <ComboBox
+                                                                    items="{
+                                                                            path: '/estSizes',
+                                                                            sorter: { path: 'VALUE' }
+                                                                        }"
+                                                                    selectedKey="{MAXIMUM_FILE_SIZE_GB}">
+                                                                    <core:Item key="{KEY}" text="{VALUE}" />
+                                                                </ComboBox>
+                                                                <Input value="{MAXIMUM_FILE_SIZE_OTHER}" placeholder="'Other' maximum file size" maxLength="100"/>
+                                                                <Label text="JCF Data Source (DMZ)" />
+                                                                <Input value="{JCF_DATA_SOURCE_DMZ}" placeholder="JCF Data Source (DMZ)" maxLength="30"/>
+                                                                <Label text="JCF Data Target (Clean)" />
+                                                                <Input value="{JCF_DATA_TARGET_CLEAN}" placeholder="JCF Data Target (Clean)" maxLength="30"/>
+                                                                <Label text="Transformations or Special Requests" />
+                                                                <Input value="{TRANS_SPECIAL_REQUESTS}" placeholder="Transformations or Special Requests" maxLength="100"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Sampling">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="samplingForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="Sampling Method(s)" />
+                                                                <MultiComboBox
+                                                                    items="{
+                                                                            path: '/samplingMethods',
+                                                                            sorter: { path: 'VALUE' }
+                                                                        }"
+                                                                    selectedKeys="{SAMPLING_METHODS}">
+                                                                    <core:Item key="{KEY}" text="{VALUE}" />
+                                                                </MultiComboBox>
+                                                                <Input value="{SAMPLING_METHODS_OTHER}" placeholder="'Other' sampling methods" maxLength="100"/>
+                                                                <Label text="Filtering Criteria" />
+                                                                <TextArea value="{FILTERING_CRITERIA}" placeholder="Filtering criteria" maxLength="512" height="100px"/>
+                                                                <Label text="Data Distribution" />
+                                                                <TextArea value="{DATA_DISTRIBUTION}" placeholder="Enter percentage and type" maxLength="500" height="100px"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Labeling">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="labelingForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="Labeling Method(s)" />
+                                                                <MultiComboBox
+                                                                    items="{
+                                                                            path: '/labelingMethods',
+                                                                            sorter: { path: 'VALUE' }
+                                                                        }"
+                                                                    selectedKeys="{LABELING_METHODS}">
+                                                                    <core:Item key="{KEY}" text="{VALUE}" />
+                                                                </MultiComboBox>
+                                                                <Input value="{LABELING_METHODS_OTHER}" placeholder="'Other' labeling methods" maxLength="100"/>
+                                                                <Label text="Human Types" />
+                                                                <Input value="{LABEL_TYPES_HUMAN}" placeholder="" maxLength="30"/>
+                                                                <Label text="Human Sources" />
+                                                                <Input value="{LABEL_SOURCE_HUMAN}" placeholder="" maxLength="30"/>
+                                                                <Label text="Human Procedure" />
+                                                                <TextArea value="{LABEL_PROCEDURE_HUMAN}" placeholder="" maxLength="512" height="100px"/>
+                                                                <Label text="Algorithmic Types" />
+                                                                <Input value="{LABEL_TYPES_ALGORITHM}" placeholder="" maxLength="30"/>
+                                                                <Label text="Algorithmic Sources" />
+                                                                <Input value="{LABEL_SOURCE_ALGORITHM}" placeholder="" maxLength="30"/>
+                                                                <Label text="Algorithmic Procedure" />
+                                                                <TextArea value="{LABEL_PROCEDURE_ALGORITHM}" placeholder="" maxLength="512" height="100px"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Validation">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="validationForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="Method(s)" />
+                                                                <MultiComboBox
+                                                                    items="{
+                                                                            path: '/validationMethods',
+                                                                            sorter: { path: 'VALUE' }
+                                                                        }"
+                                                                    selectedKeys="{VALIDATION_METHOD}">
+                                                                    <core:Item key="{KEY}" text="{VALUE}" />
+                                                                </MultiComboBox>
+                                                                <Input value="{VALIDATION_METHODS_OTHER}" placeholder="'Other' labeling methods" maxLength="200"/>
+                                                                <Label text="Validation Task(s)" />
+                                                                <TextArea value="{VALIDATION_TASKS}" placeholder="" maxLength="500" height="100px"/>
+                                                                <Label text="Validator Description(s)" />
+                                                                <TextArea value="{VALIDATION_DESCRIPTION}" placeholder="" maxLength="500" height="100px"/>
+                                                                <Label text="Validation Policy Summary" />
+                                                                <TextArea value="{VALIDATION_POLICY_SUMMARY}" placeholder="" maxLength="500" height="100px"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                    <u:ObjectPageSubSection title="Appendices">
+                                                        <u:blocks>
+                                                            <f:SimpleForm id="appendixAForm" layout="ColumnLayout" editable="true">
+                                                                <Label text="Statutory Authorziation" />
+                                                                <TextArea value="{STATUTORY_AUTHORIZATION}" placeholder="Statutory authorization" maxLength="5000" height="100px"/>
+                                                                <Label text="Collection Mechanism (Consent)" />
+                                                                <TextArea value="{COLLECTION_MECHANISM}" placeholder="Collection mechanism" maxLength="5000" height="100px"/>
+                                                                <Label text="Data Minimization" />
+                                                                <TextArea value="{DATA_MINIMIZATION}" placeholder="Data minimization" maxLength="5000" height="100px"/>
+                                                                <Label text="Privacy Risk" />
+                                                                <TextArea value="{PRIVACY_RISK}" placeholder="Privacy risk" maxLength="5000" height="100px"/>
+                                                                <Label text="Ethics Risk" />
+                                                                <TextArea value="{ETHICS_RISK}" placeholder="Ethics risk" maxLength="5000" height="100px"/>
+                                                            </f:SimpleForm>
+                                                        </u:blocks>
+                                                    </u:ObjectPageSubSection>
+                                                </u:subSections>
+                                            </u:ObjectPageSection>
+                                        </u:sections>
+                                    </u:ObjectPageLayout>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                        </l:content>
+                    </l:BlockLayoutRow>
+                </l:content>
+            </l:BlockLayout>
+        </content>
+    </Page>
+    <Dialog
+        id="submitDialog"
+        title="Submit Data Card"
+        icon="sap-icon://paper-plane"
+        contentWidth="500px"
+        contentHeight="200px">
+        <content>
+            <core:Fragment fragmentName="marina.view.fragment.SubmissionNotes" type="XML" />
+        </content>
+        <beginButton>
+            <Button
+                text="Submit"
+                press="onSubmitPress" />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="closeDialog" />
+        </endButton>
+    </Dialog>
+    <Dialog
+        id="approveDialog"
+        title="Approve Data Card"
+        icon="sap-icon://accept"
+        contentWidth="500px"
+        contentHeight="200px">
+        <content>
+            <core:Fragment fragmentName="marina.view.fragment.SubmissionNotes" type="XML" />
+        </content>
+        <beginButton>
+            <Button
+                text="Accept"
+                type="Accept"
+                press="onAcceptPress" />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="closeDialog" />
+        </endButton>
+    </Dialog>
+    <Dialog
+        id="rejectDialog"
+        title="Reject Data Card"
+        icon="sap-icon://decline"
+        contentWidth="500px"
+        contentHeight="200px">
+        <content>
+            <core:Fragment fragmentName="marina.view.fragment.SubmissionNotes" type="XML" />
+        </content>
+        <beginButton>
+            <Button
+                text="Reject"
+                type="Reject"
+                press="onRejectPress" />
+        </beginButton>
+        <endButton>
+            <Button
+                text="Cancel"
+                press="closeDialog" />
+        </endButton>
+    </Dialog>
+</mvc:View>

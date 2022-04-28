@@ -1,0 +1,32 @@
+{
+	"HANA":  {
+		"DATA_BROKER":  {
+			"host":  "52.61.190.84",
+			"port": "30015",
+			"user": "MARINA_DB_XSA",
+			"password": "",
+			"database": "HDB",
+			"schema": "MARINA"
+		},
+		"IMAGERY_PACKAGES":  {
+			"host":  "52.61.190.84",
+			"port": "30015",
+			"user": "MARINA_DB_XSA",
+			"password": "",
+			"database": "HDB",
+			"schema": "IMAGERY_PACKAGES"
+		}
+	},
+	"DI":  {
+		"host": "3.32.77.214",
+		"port": "32530",
+		"tenant": "default",
+		"user": "marina",
+		"password": "N0chance"
+	},
+	"S3":  {
+		"region": "us-gov-west-1",
+		"MARINA_BUCKET": "marina-download",
+		"IMAGERY_BUCKET": "marina-imagery-packages"
+	}
+}

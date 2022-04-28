@@ -1,0 +1,277 @@
+{
+  "_version": "1.32.0",
+  "sap.app": {
+    "id": "marina",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "userData": {
+				"uri": "/config/getCurrentUser/",
+				"type": "JSON"
+			},
+      "datasetCategories": {
+				"uri": "/config/getDataSetCategoryWithIcons",
+				"type": "JSON"
+			},
+      "mainService": {
+        "uri": "http://localhost:3000",
+        "type": "JSON"
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "marina.view.Launchpad",
+      "type": "XML",
+      "async": true,
+      "id": "Launchpad"
+    },
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.97.2",
+      "libs": {
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "marina.i18n.i18n",
+					"supportedLocales": [
+						""
+					],
+          "fallbackLocale": ""
+          
+        }
+      },
+      	"USER_MODEL":{
+			"type": "sap.ui.model.json.JSONModel",
+			"dataSource": "userData"
+		},
+      	"DATASET_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+      	"FILE_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+      	"IMAGERY_SEARCH_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+		"DATA_SEARCH_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+		"MODELS_SEARCH_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+      	"IMAGERY_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+		"CLIP_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+		"FRAME_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		},
+		"PACKAGE_MODEL": {
+			"type": "sap.ui.model.json.JSONModel"
+		}
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "async": true,
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "marina.view",
+        "controlId": "marinaApp",
+        "controlAggregation": "pages",
+        "transition": "slide",
+        "bypassed": {
+					"target": [
+						"overviewPage"
+					]
+				}
+      },
+      "routes": [
+        {
+					"pattern": "overview",
+					"name": "overview",
+					"target": "overviewPage"
+				},  {
+					"pattern": "myCards",
+					"name": "myCards",
+					"target": "myCardsPage"
+				}, {
+					"pattern": "myApprovals",
+					"name": "myApprovals",
+					"target": "myApprovalsPage"
+				}, {
+					"pattern": "compass",
+					"name": "compass",
+					"target": "compass"
+				}, {
+					"pattern": "search",
+					"name": "search",
+					"target": "search"
+				}, {
+          "pattern": "models",
+					"name": "models",
+					"target": "models"
+        }, {
+					"pattern": "dataSet/{id}",
+					"name": "dataSet",
+					"target": "dataSetPage"
+				}, {
+					"pattern": "master/{layout}",
+					"name": "master",
+					"target": [
+						"master"
+					]
+				}, {
+					"pattern": "detail/{file}/{layout}",
+					"name": "detail",
+					"target": [
+						"detail"
+					]
+				}, {
+					"pattern": "dataCardNew/{wfId}",
+					"name": "dataCardNew",
+					"target": "dataCardNewPage"
+
+				}, {
+					"pattern": "dataCardEdit/{cardId}",
+					"name": "dataCardEdit",
+					"target": "dataCardNewPage"
+				}, {
+					"pattern": "data",
+					"name": "data",
+					"target": "data"
+				}, {
+					"pattern": "dataSetManifest",
+					"name": "dataSetManifest",
+					"target": "dataSetManifest"
+				}, {
+					"pattern": "streams",
+					"name": "streams",
+					"target": "streams"
+				}, {
+					"pattern": "imagery",
+					"name": "imagery",
+					"target": "imagery"
+				},{
+					"pattern": "imageryDetails/{id}/{layout}",
+					"name": "imageryDetails",
+					"target": "imageryDetails"
+				}, {
+					"pattern": "frame/{id}/{source}/{type}",
+					"name": "frame",
+					"target": "frame",
+					"layout": "EndColumnFullScreen"
+				}
+      ],
+      "targets": {
+        "overviewPage": {
+          "viewId": "Overview",
+					"viewName": "Overview",
+					"viewLevel": 1
+				},
+        "myCardsPage": {
+          "viewId": "MyCards",
+					"viewName": "MyCards",
+					"viewLevel": 1
+				},
+        "myApprovalsPage": {
+          "viewId": "MyApprovals",
+					"viewName": "MyApprovals",
+					"viewLevel": 1
+				},
+        "compass": {
+          "viewId": "Compass",
+					"viewName": "Compass"
+				},
+        "search": {
+          "viewId": "Search",
+					"viewName": "Search"
+				},
+        "dataSetPage": {
+          "viewId": "DataSet",
+					"viewName": "DataSet",
+					"viewLevel": 2
+				},
+        "master": {
+          "viewId": "DataSetMaster",
+					"viewName": "DataSetMaster"
+				},
+        "detail": {
+          "viewId": "DataSetDetail",
+					"viewName": "DataSetDetail"
+				},
+        "dataCardNewPage": {
+          "viewId": "DataCardEditable",
+					"viewName": "DataCardEditable",
+					"viewLevel": 2
+				},
+        "data": {
+          "viewId": "DataSearch",
+					"viewName": "DataSearch"
+				},
+        "dataSetManifest": {
+          "viewId": "DataSetManifest",
+					"viewName": "DataSetManifest"
+				},
+				"models": {
+          "viewId": "ModelSearch",
+					"viewName": "ModelSearch"
+				},
+        "streams": {
+          "viewId": "Streams",
+					"viewName": "Streams"
+				},
+        "imagery": {
+          "viewId": "ImagerySearch",
+					"viewName": "ImagerySearch"
+				},
+        "imageryDetails": {
+          "viewId": "ImageryPackage",
+					"viewName": "ImageryPackage"
+				},
+        "frame": {
+          "viewId": "FrameDetail",
+					"viewName": "FrameDetail"
+				}
+      }
+    }
+  }
+}

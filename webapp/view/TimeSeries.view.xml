@@ -1,0 +1,33 @@
+<mvc:View 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns="sap.suite.ui.commons"
+	xmlns:m="sap.m"
+	xmlns:c="sap.ui.core"
+	displayBlock="true" 
+    controllerName="marina.controller.TimeSeries">
+    <Timeline
+			id="idTimeline"
+			enableDoubleSided="false"
+            axisOrientation="Horizontal"
+			growingThreshold="0"
+			filterSelectionChange="updateGraphBasedOnFilter"
+			filterOpen="onFilterOpen"
+			sortOldestFirst="true"
+			content="{/items}">
+		<content>
+			<TimelineItem
+					dateTime="{dateTime}"
+					userName="{title}"
+					text="{text}"
+					maxCharacters="200"
+					filterValue="{filterValue}"
+					userNameClickable="true"
+					userNameClicked="itemClicked"
+					icon="{icon}">
+					<customData>
+						<c:CustomData key="nodeId" value="{key}"/>
+					</customData>
+			</TimelineItem>
+		</content>
+	</Timeline>
+</mvc:View>

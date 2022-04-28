@@ -1,0 +1,171 @@
+<mvc:View
+    controllerName="marina.controller.DataSetDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.uxap"
+    xmlns:tb="sap.ui.table"
+    xmlns:core="sap.ui.core"
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns="sap.m">
+    <u:ObjectPageLayout id="opl" useIconTabBar="true" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" 
+        headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false" class="sapUiSizeCompact">
+        <u:headerTitle>
+            <u:ObjectPageDynamicHeaderTitle>
+                <u:snappedHeading>
+                    <FlexBox wrap="Wrap" alignItems="Center" fitContainer="true">
+                        <items>
+                            <core:Icon src="{path: '/file/FILE_TYPE', formatter: '.formatter.getFileTypeIcon'}" size="25px" color="#0854a0" class="sapUiTinyMarginEnd" />
+                            <Title text="{/file/FILE_NAME}" wrapping="true" />
+                        </items>
+                    </FlexBox>
+                </u:snappedHeading>
+                <u:expandedHeading>
+                    <FlexBox wrap="Wrap" alignItems="Center" fitContainer="true" class="sapUiSmallMarginBottom">
+                        <items>
+                            <core:Icon src="{path: '/file/FILE_TYPE', formatter: '.formatter.getFileTypeIcon'}" size="25px" color="#0854a0" class="sapUiTinyMarginEnd" />
+                            <Title text="{/file/FILE_NAME}" wrapping="true" />
+                        </items>
+                    </FlexBox>
+                </u:expandedHeading>
+                <u:navigationActions>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://decline" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }" />
+                </u:navigationActions>
+                <u:actions>
+                    <Button text="Export" tooltip="Export File" visible="{path: '/file/EXPORTABLE', formatter: '.formatter.getVisible'}" />
+                </u:actions>
+            </u:ObjectPageDynamicHeaderTitle>
+        </u:headerTitle>
+        <u:headerContent>
+            <VBox>
+                <items> 
+                    <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                        <items>
+                            <Label text="Classification" class="sapUiSmallMarginEnd" />
+                            <Text text="{/file/CLASSIFICATION}"/>
+                        </items>
+                    </HBox>
+                    <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                        <items>
+                            <Label text="File Path: " class="sapUiSmallMarginEnd"/>
+                            <Text text="{/file/DATA_SET_PATH}" width="400px" wrapping="true" />
+                        </items>
+                    </HBox>
+                    <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                        <items>
+                            <Label text="File Size:  " class="sapUiSmallMarginEnd"/>
+                            <Text text="{/file/FILE_SIZE_MB} MB" wrapping="true" />
+                        </items>
+                    </HBox>
+                    <HBox justifyContent="Start" class="sapUiTinyMarginTop">
+                        <items>
+                            <Label text="# Rows: " class="sapUiSmallMarginEnd"/>
+                            <Text  text="{path: '/file/NUMBER_ROWS', formatter: '.formatter.formatNumber'}" wrapping="true" />
+                        </items>
+                    </HBox>
+                </items>
+            </VBox>
+            <VBox>
+                <FlexBox width="19rem" height="10rem" alignItems="Start" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
+                    <items>
+                        <Toolbar>
+                            <content>
+                                <Label text="Column Types" />
+                            </content>
+                        </Toolbar>
+                        <micro:InteractiveDonutChart displayedSegments="7" selectionEnabled="true" segments="{/fileColTypes}">
+                            <micro:segments>
+                                <micro:InteractiveDonutChartSegment label="{CTYPE}" value="{COUNT}" displayedValue="{PERCENTAGE}"/>
+                            </micro:segments>
+                        </micro:InteractiveDonutChart>
+                    </items>
+                </FlexBox>
+            </VBox>
+        </u:headerContent>
+        <u:sections>
+            <u:ObjectPageSection title="History">
+                <u:subSections>
+                    <u:ObjectPageSubSection>
+                        <u:blocks>
+                            <ScrollContainer vertical="true" height="50vh">
+                                <content>
+                                    <Table id="historyTable" fixedLayout="true" enableBusyIndicator="true" alternateRowColors="true" growing="true" growingScrollToLoad="true" 
+                                        growingThreshold="20"
+                                        items="{
+                                            path: '/history'
+                                        }">
+                                        <columns>
+                                            <Column><Text text="Classification"/> </Column>
+                                            <Column ><Text text="# Rows"/> </Column>
+                                            <Column><Text text="File Size"/> </Column>
+                                            <Column ><Text text="Date"/> </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem vAlign="Middle">
+                                                <cells>
+                                                    <Text text="{CLASSIFICATION}" />
+                                                    <Text text="{NUMBER_ROWS}" />
+                                                    <Text text="{FILE_SIZE_MB} MB" />
+                                                    <Text text="{path: '/dataSet/LAST_MOD_DATE', formatter: '.formatter.modDateTime'}"  />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </content>
+                            </ScrollContainer>
+                        </u:blocks>
+                    </u:ObjectPageSubSection>
+                </u:subSections>
+            </u:ObjectPageSection>
+            <u:ObjectPageSection title="Columns" visible="{path: '/file/FILE_TYPE', formatter: '.formatter.isCSV'}">
+                <u:subSections>
+                    <u:ObjectPageSubSection>
+                        <u:blocks>
+                            <ScrollContainer vertical="true" height="45vh">
+                                <content>
+                                    <Table id="columnTable" fixedLayout="true" enableBusyIndicator="true" alternateRowColors="true" growing="true" growingScrollToLoad="true" 
+                                        growingThreshold="20"
+                                        items="{
+                                            path: '/columns'
+                                        }">
+                                        <columns>
+                                            <Column><Text text="Position"/> </Column>
+                                            <Column><Text text="Column Name"/> </Column>
+                                            <Column><Text text="Data Type"/> </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem vAlign="Middle">
+                                                <cells>
+                                                    <Text text="{RRC}" />
+                                                    <Text text="{COLUMN}" />
+                                                    <Text text="{CTYPE}" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </content>
+                            </ScrollContainer>
+                        </u:blocks>
+                    </u:ObjectPageSubSection>
+                </u:subSections>
+            </u:ObjectPageSection>
+            <u:ObjectPageSection title="Data Preview" visible="{path: '/file/FILE_TYPE', formatter: '.formatter.isCSV'}">
+                <u:subSections>
+                    <u:ObjectPageSubSection>
+                        <u:blocks>
+                            <tb:Table id="previewTable" alternateRowColors="true" editable="true" selectionMode="None" 
+                                visibleRowCountMode="Auto" minAutoRowCount="15"
+                                rows="{/preview}"
+                                columns="{
+                                    path: '/columns',
+                                    factory: '.columnFactory'
+                                    }">
+                            </tb:Table>
+                        </u:blocks>
+                    </u:ObjectPageSubSection>
+                </u:subSections>
+            </u:ObjectPageSection>
+        </u:sections>
+    </u:ObjectPageLayout>
+
+
+
+</mvc:View>

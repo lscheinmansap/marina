@@ -1,0 +1,62 @@
+<mvc:View 
+	xmlns:mvc="sap.ui.core.mvc" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:l="sap.ui.layout"
+	xmlns:vk="sap.ui.vk"
+	xmlns:vbm="sap.ui.vbm"
+	controllerName="marina.controller.NodesMerge">
+    <Dialog 
+        id="mergeNodesPanel"
+        title="Merge Node">
+        <content>
+            <l:VerticalLayout width="90%" class="sapUiSmallMargin">
+                <Label text="Absorbing Node" />
+                <SearchField
+                    id="searchAbsorbingNode" 
+                    width="100%"
+                    liveChange="onSuggest"
+                    search="onSetAbsorbingNode"
+                    enableSuggestions="true"
+                    maxLength="0"
+                    suggestionItems="{
+                        path: '/suggestions',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <Label text="Target Node" />
+                <SearchField
+                    id="searchMergingNode" 
+                    width="100%"
+                    liveChange="onSuggest"
+                    search="onSetMergingNode"
+                    maxLength="0"
+                    enableSuggestions="true"
+                    suggestionItems="{
+                        path: '/suggestions',
+                        sorter: { path: 'text'}
+                    }">
+                    <SuggestionItem 
+                        text="{text}"
+                        icon="{icon}"
+                        key="{key}"/>
+                </SearchField>
+                <l:HorizontalLayout>
+                    <Button 
+                        text="Merge"
+                        type="Accept"
+                        press="onPressMergeNodes" 
+                        class="sapUiSmallMarginEnd"/>
+                    <Button 
+                        text="Cancel"
+                        type="Reject"
+                        press="onPressCancel" />
+                </l:HorizontalLayout>
+            </l:VerticalLayout>
+        </content>
+    </Dialog>
+</mvc:View>

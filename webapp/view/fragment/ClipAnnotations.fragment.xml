@@ -1,0 +1,57 @@
+<core:FragmentDefinition 
+    xmlns="sap.m"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:core="sap.ui.core">
+    <Popover
+        title="Clip Objects"
+        contentMinWidth="300px"
+        placement="Bottom"
+        class="sapUiNoContentPadding">
+        <subHeader>
+            <Toolbar>
+                <content>
+                    <Button 
+                        icon="sap-icon://multiselect-all"
+                        tooltip="Select All"
+                        press="selectAll"/>
+                    <Button 
+                        icon="sap-icon://multiselect-none"
+                        tooltip="Deselect All"
+                        press="deSelectAll"/>
+                    <ToolbarSpacer />
+                    <SearchField liveChange="annotationsObjectSearch"/>
+                </content>
+            </Toolbar>
+        </subHeader>
+        <content>
+            <ScrollContainer
+                height="250px"
+                width="100%"
+                vertical="true">
+                <content>
+                    <List 
+                        width="100%"
+                        mode="MultiSelect"
+                        items="/clipAnnotations"
+                        class="sapUiNoContentPadding">
+                        <items>
+                            <StandardListItem 
+                                title="{OBJECT_NAME}"
+                                info="{OBJECT_FRAME_COUNT}"
+                                customData:objectId="{OBJECT_ID}"
+                            />
+                        </items>
+                    </List>
+                </content>
+            </ScrollContainer>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button text="Apply" press="annotateClip"/>
+                </content>
+            </Toolbar>
+        </footer>
+    </Popover>
+</core:FragmentDefinition>

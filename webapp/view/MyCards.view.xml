@@ -1,0 +1,72 @@
+<mvc:View
+    controllerName="marina.controller.MyCards"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns="sap.m">
+    <Page showHeader="false">
+        <content>
+            <l:BlockLayout background="Dashboard" class="mgmtBlockLayout">
+                <l:content>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell width="1">
+                                <l:content>
+                                    <Toolbar class="sapUiSmallMarginBottom">
+                                        <Label text="My Cards" class="resultsHeaderTitle" />
+                                    </Toolbar>
+                                    <IconTabBar id="myCardsIconTabBar"
+                                        stretchContentHeight="false"
+                                        selectedKey="NOT_SUBMITTED"
+                                        expandable="false"
+                                        select="filterMyCards">
+                                        <content>
+                                            <ScrollContainer id="myCardsScroll"
+                                                vertical="true">
+                                                <content>
+                                                    <List id="myCardsList"
+                                                        mode="SingleSelectMaster"
+                                                        growing="true"
+                                                        growingScrollToLoad="true"
+                                                        growingThreshold="50"
+                                                        sticky="HeaderToolbar"
+                                                        noDataText="No cards available."
+                                                        itemPress="pressEditCard"
+                                                        items="{/myCards}"
+                                                        class="centerAlign">
+                                                        <items>
+                                                            <StandardListItem
+                                                                type="Navigation"
+                                                                title="{CARD_NAME}" 
+                                                                wrapping="true"
+                                                                icon="{ICON}"
+                                                                info="{parts:[ {path: 'STATE_NAME'}, {path: 'ACTION_TAKEN'} ],
+                                                                        formatter: '.formatter.getCardState'}"
+                                                                infoState="{path: 'ACTION_TAKEN', formatter: '.formatter.getCardAction'}"
+                                                                description="{path: 'CREATED_TIMESTAMP', formatter: '.formatter.modDateTime'}"
+                                                                customData:id="{CARD_ID}"
+                                                                customData:wfName="{WF_NAME}"/>
+                                                        </items>
+                                                        <layoutData>
+                                                            <FlexItemData maxWidth="100%" minWidth="100%" />
+                                                        </layoutData>
+                                                    </List>
+                                                </content>
+                                            </ScrollContainer>
+                                        </content>
+                                        <items>
+                                            <IconTabFilter icon="sap-icon://save" iconColor="Neutral" text="Not Submitted" key="NOT_SUBMITTED" count="{/notSubmittedCnt}" />
+                                            <IconTabFilter icon="sap-icon://paper-plane" text="Submitted" key="" count="{/inProgressCnt}" />
+                                            <IconTabFilter icon="sap-icon://decline" iconColor="Negative" text="Rejected" key="REJECTED" count="{/rejectedCnt}" />
+                                            <IconTabFilter icon="sap-icon://accept" iconColor="Positive" text="Approved" key="APPROVED" count="{/approvedCnt}" />
+                                        </items>
+                                    </IconTabBar>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                        </l:content>
+                    </l:BlockLayoutRow>
+                </l:content>
+            </l:BlockLayout>
+        </content>
+    </Page>
+</mvc:View>
