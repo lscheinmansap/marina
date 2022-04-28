@@ -1,9 +1,15 @@
-# Marina Compass
+# Marina
+Marina is an SAP UI5 based User Experience (UX) that surfaces federated data orchestrated by SAP Data Intelligence and SAP HANA. It additionally focuses on the Networkgraph library and Graph ready data. The Networkgraph enables exploration of connected data such as shortest paths and neighbors separated by n degrees. Additionally, it provides a timeline and geo map for which to run spatial searches. The objective of the app is to provide a UX that highlights the value of SAP HANA Graph and Spatial engines.
 
-Marina Compass is an SAP UI5 based User Experience (UX) that focuses on the Networkgraph library and Graph ready data. It includes exploration of connected data such as shortest paths and neighbors separated by n degrees. Additionally, it provides a timeline and geo map for which to run spatial searches. The objective of the app is to provide a UX that highlights the value of SAP HANA Graph and Spatial engines.
+The current release of Marina is a prototype stage with an api for the graph specific functions written in python and the data orchestration marinaApi written in node. The plan is to merge these 2 APIs into a single folder and code base. 
+
+The HANA folder contains the setup of the HANA tables for data orchestration. It includes an env_template which should contain the endpoints and credentials for your SAP HANA instance. When these are added, it should be saved as .env which is otherwise ignored by git verioning to ensure security detals are not published. When running the hana/main.py, it will use the env_template to access and then create the SAP HANA tables. 
+
+# License details
+The use of the SAP UI5 libraries stored in the webaoo is not license free but is included with the license that comes with SAP HANA Enterprise or SAP HANA Cloud subscription. The remaining code in the repository is covered under MIT License.
 
 ## SAP HANA requirements
-The files included in this repository (api/data) will be loaded into an SAP HANA instance when you first run the application, either locally or in Cloud Foundry. Therefore, you need to have a HANA DB running with a recommended 50 GB of memory and 120 GB of storage. In most cases, the application will only require at most 10 GB of memory and 5 GB of storage so the minimum SAP HANA Cloud settings should be fine. 
+The files included in the api/data folder will be loaded into an SAP HANA instance when you first run the application, either locally or in Cloud Foundry. Therefore, you need to have a HANA DB running with a recommended 50 GB of memory and 120 GB of storage. In most cases, the application will only require at most 10 GB of memory and 5 GB of storage so the minimum SAP HANA Cloud settings should be fine. 
 
 Once you have the HANA instance, copy the endpoint and use it when updating the environment file (api/.env) that you will need to make as explained below.
 
@@ -26,7 +32,7 @@ The following instructions describe the steps to set up for local development bu
         ```python
         pip install -r api/requirements.txt
         ```
-1. Update the compass-api/.env-sample file with your variables to ensure back-end connection. This includes the HANA endpoint and its technical user details. When saving the .env-sample, save it as .env to ensure the credentials are not updated to github if you do any push. The .env file is ignored but the .env-sample is not.
+1. Update the api/.env-sample file with your variables to ensure back-end connection. This includes the HANA endpoint and its technical user details. When saving the .env-sample, save it as .env to ensure the credentials are not updated to github if you do any push. The .env file is ignored but the .env-sample is not.
 
 1. Start the API server from the api folder
     ```python
