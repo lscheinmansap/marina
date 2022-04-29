@@ -1,7 +1,7 @@
 {
 	"HANA":  {
 		"DATA_BROKER":  {
-			"host":  "52.61.190.84",
+			"host":  "nn.nn.nnn.nn",
 			"port": "30015",
 			"user": "MARINA_DB_XSA",
 			"password": "",
@@ -9,7 +9,7 @@
 			"schema": "MARINA"
 		},
 		"IMAGERY_PACKAGES":  {
-			"host":  "52.61.190.84",
+			"host":  "nn.nn.nnn.nn",
 			"port": "30015",
 			"user": "MARINA_DB_XSA",
 			"password": "",
@@ -18,7 +18,7 @@
 		}
 	},
 	"DI":  {
-		"host": "3.32.77.214",
+		"host": "n.nnn.nnn.nnnn",
 		"port": "32530",
 		"tenant": "default",
 		"user": "marina",
